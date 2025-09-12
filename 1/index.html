@@ -85,6 +85,33 @@ Image: master-pnp-prok-00100-00176a Shift_G: [75. 19.] Shift_R: [93. 11.]
 Image: master-pnp-prok-00000-00093a Shift_G: [18. -7.] Shift_R: [ 57. -15.]
 </pre>
 
+<!-- --- Snippet 1: Naive Alignment (Exhaustive NCC) --- -->
+<section class="pg-card-naive">
+  <style>
+    .pg-card-naive{font:14px/1.5 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:780px;margin:1.5rem auto;padding:1rem 1.25rem;border:1px solid #e5e7eb;border-radius:14px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+    .pg-card-naive h2{margin:0 0 .25rem;font-size:1.25rem}
+    .pg-card-naive .sub{color:#6b7280;margin:0 0 1rem}
+    .pg-card-naive ul{margin:.5rem 0 0 1.1rem;padding:0}
+    .pg-card-naive li{margin:.4rem 0}
+    .pg-tag{display:inline-block;padding:.18rem .5rem;border:1px solid #e5e7eb;border-radius:999px;font-size:.75rem;color:#374151;background:#f9fafb;margin:.25rem 0}
+    .pg-foot{margin-top:.9rem;color:#6b7280;font-size:.85rem}
+  </style>
+
+  <h2>Naive Alignment</h2>
+  <p class="sub">Exhaustive normalized cross-correlation at full resolution.</p>
+
+  <span class="pg-tag">Pipeline</span>
+  <ul>
+    <li><strong>Load &amp; split:</strong> Read the Prokudin-Gorskii plate and split vertically into <code>B</code>, <code>G</code>, <code>R</code>.</li>
+    <li><strong>Normalize:</strong> Convert each channel to float in the range <code>[0,1]</code>.</li>
+    <li><strong>Align to blue:</strong> For <code>G</code> and <code>R</code>, search shifts in <code>[-max_shift,+max_shift]</code> (x,y). Score with NCC (dot product over L2 norms). Pick the best shift and <code>np.roll</code>.</li>
+    <li><strong>Stack &amp; clamp:</strong> <code>np.dstack([R<sub>aligned</sub>, G<sub>aligned</sub>, B])</code>, replace NaN/inf, clip to <code>[0,1]</code>.</li>
+    <li><strong>Save:</strong> Convert to <code>uint8</code> and write a JPEG.</li>
+  </ul>
+
+  <p class="pg-foot">Key idea: single-scale alignment on raw intensities using NCC.</p>
+</section>
+
 <h1>B: This is the variant using edge detection for alignment, a color channel scaling and color correction for better quality:</h1>
 
     The steps taken are explained in more detail below. but lets just share the results first.
