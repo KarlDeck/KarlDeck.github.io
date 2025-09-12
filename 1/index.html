@@ -38,7 +38,7 @@
         }
     </style>
 
-    <h1>Photo Gallery</h1>
+    <h1>Photo Gallery (The last three are my personal picks from the archive)</h1>
 
     <div class="gallery">
         <img src="first/cathedral.jpg" alt="cathedral">
@@ -89,5 +89,6 @@ It can be observed, that while the pictures almost align and the colours seem to
         <img src="second/extra3.jpg" alt="extra_picture">
     </div>
 
+    This version is percievably better than the first naiive try. The first step is to normalize the values for each chanel. For this it is assumed that the lowest value in each channel should be 0 and the highest 255. A MinMax scaler is used to approptiately project our values into this space. To align the channels this time i use edge detection. For this the channals are first blurred with gaussians to get rid of noise. Edges are being detected with canny. The next step is to try to align these edges, Pyramids are used to speed this action up again. In the next step the picture is cropped by detecting the black frame around the picture and cutting off the edges accordingly. In the next step i try to estimte the illuminance of the picture to correct the lighting. For this i use only inner pixels and not the pixels from the border, since these are contaminated by a lot of monochromatic artifacts. I then take this mean lighting and correct the images entire lighting with this, since we know that idiealy these colours should be balanced. This means the ideal average pixel is gray. Lastly I need to apply a colour mask to correct for the plates Prokudin-Gorskii used not being standardized to our modern day RGB standard. So his pure red was just not the same as ours. I tried to aproximate this with a matrix to transform between the colour spaces. I just used a little trial and error for this and tried to make it look realisitically.
 </body>
 </html>
