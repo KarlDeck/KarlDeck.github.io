@@ -17,7 +17,49 @@
 <body>
     <h1>Project 1</h1>
     <h2>This is the naiive variant, with no finetuning and just a quick pyramid search:</h2>
-    You can see that the photos are not cropped and also the color is not adjusted
+    You can see that the photos are not cropped and also the color is not adjusted. Scroll down to see it with bells and whistles.
+
+
+    <style>
+        .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-gap: 10px;
+        }
+        .gallery img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+        object-fit: cover;
+        transition: transform 0.2s;
+        }
+        .gallery img:hover {
+        transform: scale(1.05);
+        }
+    </style>
+
+    <h1>Photo Gallery</h1>
+
+    <div class="gallery">
+        <img src="photo1.jpg" alt="Photo 1">
+        <img src="photo2.jpg" alt="Photo 2">
+        <img src="photo3.jpg" alt="Photo 3">
+        <img src="photo4.jpg" alt="Photo 4">
+        <img src="cathedral.jpg" alt="Cathedral">
+        <img src="church.jpg" alt="Church">
+        <img src="emir.jpg" alt="Emir">
+        <img src="harvesters.jpg" alt="Harvesters">
+        <img src="icon.jpg" alt="Icon">
+        <!-- keep adding images here -->
+    </div>
+    </body>
+    </html>
+
+
+
+
+
+
 
     <img src="Photo1.jpg" alt="Close up">
     <img src="Photo2.jpg" alt="Zoom in">
