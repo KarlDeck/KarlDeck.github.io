@@ -108,8 +108,6 @@ Image: master-pnp-prok-00000-00093a Shift_G: [18. -7.] Shift_R: [ 57. -15.]
     <li><strong>Stack &amp; clamp:</strong> <code>np.dstack([R<sub>aligned</sub>, G<sub>aligned</sub>, B])</code>, replace NaN/inf, clip to <code>[0,1]</code>.</li>
     <li><strong>Save:</strong> Convert to <code>uint8</code> and write a JPEG.</li>
   </ul>
-
-  <p class="pg-foot">Key idea: single-scale alignment on raw intensities using NCC.</p>
 </section>
 
 <h1>B: This is the variant using edge detection for alignment, a color channel scaling and color correction for better quality:</h1>
@@ -170,8 +168,51 @@ Estimated illuminant: [0.53835636 0.5580919  0.47626042]
 Image: self_portrait Shift_G: [77 29] Shift_R: [175  37]
 Estimated illuminant: [0.6818688  0.6391872  0.47170338]
 Image: harvesters Shift_G: [60 18] Shift_R: [117  10]
-
 </pre>
+
+<!-- --- Snippet 2: Advanced Alignment (Pyramid + Edges + Post) --- -->
+<section class="pg-card-adv">
+  <style>
+    .pg-card-adv{font:14px/1.5 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:780px;margin:1.5rem auto;padding:1rem 1.25rem;border:1px solid #e5e7eb;border-radius:14px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+    .pg-card-adv h2{margin:0 0 .25rem;font-size:1.25rem}
+    .pg-card-adv .sub{color:#6b7280;margin:0 0 1rem}
+    .pg-card-adv h3{margin:1rem 0 .3rem;font-size:1rem}
+    .pg-card-adv ul{margin:.4rem 0 0 1.1rem;padding:0}
+    .pg-card-adv li{margin:.35rem 0}
+    .pg-badges{margin:.4rem 0 .2rem}
+    .pg-badge{display:inline-block;margin-right:.35rem;margin-bottom:.35rem;padding:.18rem .5rem;border:1px solid #e5e7eb;border-radius:999px;font-size:.75rem;color:#374151;background:#f9fafb}
+    .pg-foot{margin-top:.9rem;color:#6b7280;font-size:.85rem}
+  </style>
+
+  <h2>Advanced Alignment</h2>
+  <p class="sub">Coarse-to-fine with edge features, plus border cleanup, white balance, and color correction.</p>
+
+  <div class="pg-badges">
+    <span class="pg-badge">Image Pyramid</span>
+    <span class="pg-badge">Canny/Sobel Edges</span>
+    <span class="pg-badge">Gray-World WB</span>
+    <span class="pg-badge">3×3 Color Matrix</span>
+  </div>
+
+  <h3>Steps</h3>
+  <ul>
+    <li><strong>Load &amp; split:</strong> Read plate → <code>B</code>, <code>G</code>, <code>R</code>.</li>
+    <li><strong>Per-channel scaling:</strong> Min–max scale each channel to <code>[0,1]</code>.</li>
+    <li><strong>Coarse-to-fine alignment:</strong> Build a pyramid (coarse → full). Keep cumulative shifts for <code>G</code> and <code>R</code>. At each scale:
+      <ul>
+        <li>Pre-shift by upsampled cumulative shift.</li>
+        <li>Compute edges (light Gaussian blur → Canny/Sobel).</li>
+        <li>Exhaustive small search on edge maps with NCC to get a delta shift.</li>
+        <li>Accumulate deltas back to full-res units.</li>
+      </ul>
+    </li>
+    <li><strong>Compose:</strong> Apply final rounded shifts at full resolution and stack <code>[R,G,B]</code>.</li>
+    <li><strong>Border cleanup:</strong> Detect near-black/blank borders via HSV V-channel stats and crop.</li>
+    <li><strong>White balance:</strong> Estimate illuminant on an inner crop (gray-world) and apply per-channel gains.</li>
+    <li><strong>Color correction:</strong> Multiply by a 3×3 matrix (e.g., <code>PG_TO_RGB</code>) to nudge colors toward standard RGB.</li>
+    <li><strong>Save:</strong> Convert to <code>uint8</code> and write the JPEG.</li>
+  </ul>
+</section>
 
 </body>
 </html>
