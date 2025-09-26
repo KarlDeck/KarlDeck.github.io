@@ -120,10 +120,10 @@ show_image(image_conv)
       <h3 id="p12">1.2 Finite Difference Operator</h3>
       <div class="grid">
         <figure class="g-4"><img src="part1/cameraman.png" alt="Cameraman" /><figcaption>Input (Cameraman)</figcaption></figure>
-        <figure class="g-4"><img src="<PATH>/part1/cameraman_dx.png" alt="dx" /><figcaption>∂I/∂x via D<sub>x</sub></figcaption></figure>
-        <figure class="g-4"><img src="<PATH>/part1/cameraman_dy.png" alt="dy" /><figcaption>∂I/∂y via D<sub>y</sub></figcaption></figure>
-        <figure class="g-6"><img src="<PATH>/part1/cameraman_gradmag.png" alt="grad mag" /><figcaption>Gradient magnitude</figcaption></figure>
-        <figure class="g-6"><img src="<PATH>/part1/cameraman_edges.png" alt="edges" /><figcaption>Binarized edges (threshold chosen qualitatively)</figcaption></figure>
+        <figure class="g-4"><img src="part1/cameraman_dx.png" alt="dx" /><figcaption>∂I/∂x via D<sub>x</sub></figcaption></figure>
+        <figure class="g-4"><img src="part1/cameraman_dy.png" alt="dy" /><figcaption>∂I/∂y via D<sub>y</sub></figcaption></figure>
+        <figure class="g-6"><img src="part1/cameraman_gradmag.png" alt="grad mag" /><figcaption>Gradient magnitude</figcaption></figure>
+        <figure class="g-6"><img src="part1/cameraman_edges.png" alt="edges" /><figcaption>Binarized edges (threshold chosen qualitatively)</figcaption></figure>
       </div>
       <pre><code>// D_x, D_y, magnitude, thresholding (replace with your code)
 <span class="todo">TODO</span>
@@ -131,17 +131,17 @@ show_image(image_conv)
 
       <h3 id="p13">1.3 Derivative of Gaussian (DoG)</h3>
       <div class="grid">
-        <figure class="g-6"><img src="<PATH>/part1/gaussian_kernel.png" alt="gaussian kernel" /><figcaption>Gaussian kernel (σ shown)</figcaption></figure>
-        <figure class="g-6"><img src="<PATH>/part1/dog_kernels.png" alt="DoG filters" /><figcaption>DoG filters (G*D<sub>x</sub>, G*D<sub>y</sub>)</figcaption></figure>
-        <figure class="g-6"><img src="<PATH>/part1/cameraman_dog_dx.png" alt="DoG dx" /><figcaption>DoG response (x)</figcaption></figure>
-        <figure class="g-6"><img src="<PATH>/part1/cameraman_dog_dy.png" alt="DoG dy" /><figcaption>DoG response (y)</figcaption></figure>
+        <figure class="g-6"><img src="part1/gaussian_kernel.png" alt="gaussian kernel" /><figcaption>Gaussian kernel (σ shown)</figcaption></figure>
+        <figure class="g-6"><img src="part1/dog_kernels.png" alt="DoG filters" /><figcaption>DoG filters (G*D<sub>x</sub>, G*D<sub>y</sub>)</figcaption></figure>
+        <figure class="g-6"><img src="part1/cameraman_dog_dx.png" alt="DoG dx" /><figcaption>DoG response (x)</figcaption></figure>
+        <figure class="g-6"><img src="part1/cameraman_dog_dy.png" alt="DoG dy" /><figcaption>DoG response (y)</figcaption></figure>
       </div>
       <p><strong>Comment on differences vs. raw finite differences:</strong> <span class="todo">TODO</span></p>
       <pre><code>// Gaussian creation via cv2.getGaussianKernel, DoG application (replace with your code)
 <span class="todo">TODO</span>
 </code></pre>
       <p><em>(Bells & Whistles)</em> Gradient orientations in HSV:</p>
-      <figure class="g-12"><img src="<PATH>/part1/cameraman_orientation_hsv.png" alt="HSV orientation" /><figcaption>Hue = orientation; value = magnitude</figcaption></figure>
+      <figure class="g-12"><img src="part1/cameraman_orientation_hsv.png" alt="HSV orientation" /><figcaption>Hue = orientation; value = magnitude</figcaption></figure>
       <pre><code>// Orientation (no built-in angle functions) (replace with your code)
 <span class="todo">TODO</span>
 </code></pre>
