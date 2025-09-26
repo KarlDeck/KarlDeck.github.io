@@ -165,49 +165,44 @@ plt.show()
 
       <h3 id="p21">2.1 Image "Sharpening" (Unsharp Mask)</h3>
       <div class="grid">
-        <figure class="g-4"><img src="<PATH>/part2/taj_original.png" alt="taj original" /><figcaption>Original (Taj)</figcaption></figure>
-        <figure class="g-4"><img src="<PATH>/part2/taj_blur.png" alt="taj blur" /><figcaption>Blurred (Gaussian)</figcaption></figure>
-        <figure class="g-4"><img src="<PATH>/part2/taj_high.png" alt="taj high" /><figcaption>High frequencies (I − G*I)</figcaption></figure>
-        <figure class="g-6"><img src="<PATH>/part2/taj_sharp_a.png" alt="taj sharpened a" /><figcaption>Sharpened (α = <span class="todo">0.3</span>)</figcaption></figure>
-        <figure class="g-6"><img src="<PATH>/part2/taj_sharp_b.png" alt="taj sharpened b" /><figcaption>Sharpened (α = <span class="todo">0.7</span>)</figcaption></figure>
+        <figure class="g-4"><img src="part2/taj_original.png" alt="taj original" /><figcaption>Original (Taj)</figcaption></figure>
+        <figure class="g-6"><img src="part2/taj_sharp_a.png" alt="taj sharpened a" /><figcaption>Sharpened (α = <span class="todo">0.3</span>)</figcaption></figure>
+        <figure class="g-6"><img src="part2/taj_sharp_b.png" alt="taj sharpened b" /><figcaption>Sharpened (α = <span class="todo">0.7</span>)</figcaption></figure>
       </div>
       <p><strong>Blur → Sharpen sanity check:</strong></p>
       <div class="grid">
-        <figure class="g-6"><img src="<PATH>/part2/sharp_source.png" alt="sharp source" /><figcaption>Sharp source</figcaption></figure>
-        <figure class="g-6"><img src="<PATH>/part2/sharp_blur.png" alt="blur then sharpen" /><figcaption>Blur then sharpen (compare to source)</figcaption></figure>
+        <figure class="g-6"><img src="part2/sharpen_examples.png" alt="sharpen examples" /><figcaption>Sharpen examples</figcaption></figure>
+        <figure class="g-6"><img src="part2/sharp_blur.png" alt="blur then sharpen" /><figcaption>Blur then sharpen (compare to source)</figcaption></figure>
       </div>
-      <pre><code>// Unsharp mask implementation (single-convolution form) (replace with your code)
-<span class="todo">TODO</span>
-</code></pre>
 
       <h3 id="p22">2.2 Hybrid Images</h3>
       <div class="grid">
-        <figure class="g-6"><img src="<PATH>/part2/derek.png" alt="Derek" /><figcaption>Derek (low-pass)</figcaption></figure>
-        <figure class="g-6"><img src="<PATH>/part2/nutmeg.png" alt="Nutmeg" /><figcaption>Nutmeg (high-pass)</figcaption></figure>
-        <figure class="g-12"><img src="<PATH>/part2/hybrid_d+n.png" alt="hybrid" /><figcaption>Hybrid result (Derek ⊕ Nutmeg)</figcaption></figure>
+        <figure class="g-6"><img src="part2/derek.png" alt="Derek" /><figcaption>Derek (low-pass)</figcaption></figure>
+        <figure class="g-6"><img src="part2/nutmeg.png" alt="Nutmeg" /><figcaption>Nutmeg (high-pass)</figcaption></figure>
+        <figure class="g-12"><img src="part2/hybrid_d+n.png" alt="hybrid" /><figcaption>Hybrid result (Derek ⊕ Nutmeg)</figcaption></figure>
       </div>
-      <p><strong>Frequency analysis (one example):</strong></p>
+      <p><strong>Test:</strong></p>
       <div class="grid">
-        <figure class="g-4"><img src="<PATH>/part2/fft_derek.png" alt="fft derek" /><figcaption>log|FFT| Derek</figcaption></figure>
-        <figure class="g-4"><img src="<PATH>/part2/fft_nutmeg.png" alt="fft nutmeg" /><figcaption>log|FFT| Nutmeg</figcaption></figure>
-        <figure class="g-4"><img src="<PATH>/part2/fft_hybrid.png" alt="fft hybrid" /><figcaption>log|FFT| Hybrid</figcaption></figure>
+        <figure class="g-4"><img src="part2/fft_derek.png" alt="fft derek" /><figcaption>Test sigmas</figcaption></figure>
       </div>
-      <div class="grid" style="margin-top:12px;">
-        <figure class="g-6"><img src="<PATH>/part2/hybrid_custom1.png" alt="hybrid 1" /><figcaption>Hybrid #2</figcaption></figure>
-        <figure class="g-6"><img src="<PATH>/part2/hybrid_custom2.png" alt="hybrid 2" /><figcaption>Hybrid #3</figcaption></figure>
+      <p><strong>More Examples + Bells & Whistles:</strong></p>
+      <div class="grid">
+        <figure class="g-4"><img src="part2/color_derek.png" alt="fft derek" /><figcaption>Derek and Nutmeg in colour</figcaption></figure>
+        <figure class="g-4"><img src="part2/me+julius.png" alt="fft derek" /><figcaption>Me and a friend of mine mixed in Doe library</figcaption></figure>
       </div>
+
       <pre><code>// Low-pass, high-pass, alignment snippet(s) (replace with your code)
 <span class="todo">TODO</span>
 </code></pre>
 
       <h3 id="p23">2.3 Gaussian & Laplacian Stacks</h3>
       <div class="grid">
-        <figure class="g-12"><img src="<PATH>/part2/oraple_levels.png" alt="stacks montage" /><figcaption>Gaussian & Laplacian stacks for apple/orange (multi-level montage)</figcaption></figure>
+        <figure class="g-12"><img src="part2/oraple_levels.png" alt="stacks montage" /><figcaption>Gaussian & Laplacian stacks for apple/orange (multi-level montage)</figcaption></figure>
       </div>
       <p><strong>Szelski Fig. 3.42 (a–l) recreation:</strong></p>
       <div class="grid">
-        <figure class="g-6"><img src="<PATH>/part2/szelski_a_to_f.png" alt="a-f" /><figcaption>(a)–(f)</figcaption></figure>
-        <figure class="g-6"><img src="<PATH>/part2/szelski_g_to_l.png" alt="g-l" /><figcaption>(g)–(l)</figcaption></figure>
+        <figure class="g-6"><img src="part2/szelski_a_to_f.png" alt="a-f" /><figcaption>(a)–(f)</figcaption></figure>
+        <figure class="g-6"><img src="part2/szelski_g_to_l.png" alt="g-l" /><figcaption>(g)–(l)</figcaption></figure>
       </div>
       <pre><code>// Gaussian/Laplacian stack construction (no built-in pyramid funcs) (replace with your code)
 <span class="todo">TODO</span>
@@ -215,15 +210,15 @@ plt.show()
 
       <h3 id="p24">2.4 Multiresolution Blending (Oraple)</h3>
       <div class="grid">
-        <figure class="g-6"><img src="<PATH>/part2/apple.png" alt="apple" /><figcaption>Apple</figcaption></figure>
-        <figure class="g-6"><img src="<PATH>/part2/orange.png" alt="orange" /><figcaption>Orange</figcaption></figure>
-        <figure class="g-12"><img src="<PATH>/part2/oraple.png" alt="oraple" /><figcaption>Final blend (mask-based, stack-aware)</figcaption></figure>
+        <figure class="g-6"><img src="part2/apple.png" alt="apple" /><figcaption>Apple</figcaption></figure>
+        <figure class="g-6"><img src="part2/orange.png" alt="orange" /><figcaption>Orange</figcaption></figure>
+        <figure class="g-12"><img src="part2/oraple.png" alt="oraple" /><figcaption>Final blend (mask-based, stack-aware)</figcaption></figure>
       </div>
       <p><strong>Irregular masks + Laplacian illustration:</strong></p>
       <div class="grid">
-        <figure class="g-6"><img src="<PATH>/part2/custom_blend1.png" alt="custom blend 1" /><figcaption>Custom blend #1 (irregular mask)</figcaption></figure>
-        <figure class="g-6"><img src="<PATH>/part2/custom_blend2.png" alt="custom blend 2" /><figcaption>Custom blend #2</figcaption></figure>
-        <figure class="g-12"><img src="<PATH>/part2/laplacian_illustration.png" alt="laplacian levels" /><figcaption>Laplacian stack levels + masked inputs</figcaption></figure>
+        <figure class="g-6"><img src="part2/custom_blend1.png" alt="custom blend 1" /><figcaption>Custom blend #1 (irregular mask)</figcaption></figure>
+        <figure class="g-6"><img src="part2/custom_blend2.png" alt="custom blend 2" /><figcaption>Custom blend #2</figcaption></figure>
+        <figure class="g-12"><img src="part2/laplacian_illustration.png" alt="laplacian levels" /><figcaption>Laplacian stack levels + masked inputs</figcaption></figure>
       </div>
       <pre><code>// Multiresolution blending using mask Gaussian stack (replace with your code)
 <span class="todo">TODO</span>
