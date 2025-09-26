@@ -29,11 +29,6 @@
   </header>
 
   <main>
-    <section id="overview">
-      <h2>Overview</h2>
-      <p>Results and minimal write-up for each required deliverable. Replace every <span class="todo">TODO</span> with your outputs (images and code) — nothing extra is included.</p>
-    </section>
-
     <!-- ========================= Part 1 ========================= -->
     <section id="part1">
       <h2>Part 1 — Filters & Edges</h2>
@@ -42,19 +37,19 @@
       <p><strong>Runtime:</strong> Compared to the selfimplemented code the library uses a C implementation of the convolution, which is highly optimited</p>
       <div class="grid">
         <figure class="g-6">
-          <img src="<PATH>/part1/box9x9.png" alt="9x9 box kernel visualization" />
+          <img src="part1/box9x9.png" alt="9x9 box kernel visualization" />
           <figcaption>9×9 box kernel (visualization)</figcaption>
         </figure>
         <figure class="g-6">
-          <img src="<PATH>/part1/self_box_blur.png" alt="Self-portrait convolved with 9x9 box filter" />
+          <img src="part1/self_box_blur.png" alt="Self-portrait convolved with 9x9 box filter" />
           <figcaption>Grayscale self-portrait blurred by 9×9 box filter</figcaption>
         </figure>
                 <figure class="g-6">
-          <img src="<PATH>/part1/me_Dx.png" alt="Self-portrait D_x" />
+          <img src="part1/me_Dx.png" alt="Self-portrait D_x" />
           <figcaption>Self-portrait D_x</figcaption>
         </figure>
                 <figure class="g-6">
-          <img src="<PATH>/part1/me_Dy.png" alt="Self-portrait D_y" />
+          <img src="part1/me_Dy.png" alt="Self-portrait D_y" />
           <figcaption>Self-portrait D_y</figcaption>
         </figure>
       </div>
@@ -125,13 +120,17 @@ show_image(image_conv)
         <figure class="g-6"><img src="part1/cameraman_gradmag.png" alt="grad mag" /><figcaption>Gradient magnitude</figcaption></figure>
         <figure class="g-6"><img src="part1/cameraman_edges.png" alt="edges" /><figcaption>Binarized edges (threshold chosen qualitatively)</figcaption></figure>
       </div>
-      <pre><code>// D_x, D_y, magnitude, thresholding (replace with your code)
-<span class="todo">TODO</span>
-</code></pre>
+      <p><strong>Differences:
+- Less of the grass is visible
+- The edges are painted more softly and thicker, without this much jitter. It seems more like an coninouse edge
+</strong> </p>
 
       <h3 id="p13">1.3 Derivative of Gaussian (DoG)</h3>
       <div class="grid">
         <figure class="g-6"><img src="part1/gaussian_kernel.png" alt="gaussian kernel" /><figcaption>Gaussian kernel (σ shown)</figcaption></figure>
+        <figure class="g-6"><img src="part1/blurred_photographer.png" alt="gaussian kernel" /><figcaption>Blurred Photographer with Gaussian</figcaption></figure>
+        <figure class="g-6"><img src="part1/blurred_photographer+edge.png" alt="gaussian kernel" /><figcaption>Blurred Photographer with Gaussian - one can see that there is less noise in the edges</figcaption></figure>
+
         <figure class="g-6"><img src="part1/dog_kernels.png" alt="DoG filters" /><figcaption>DoG filters (G*D<sub>x</sub>, G*D<sub>y</sub>)</figcaption></figure>
         <figure class="g-6"><img src="part1/cameraman_dog_dx.png" alt="DoG dx" /><figcaption>DoG response (x)</figcaption></figure>
         <figure class="g-6"><img src="part1/cameraman_dog_dy.png" alt="DoG dy" /><figcaption>DoG response (y)</figcaption></figure>
