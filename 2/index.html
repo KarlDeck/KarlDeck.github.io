@@ -39,7 +39,7 @@
       <h2>Part 1 — Filters & Edges</h2>
 
       <h3 id="p11">1.1 Convolutions from Scratch (NumPy only)</h3>
-      <p><strong>Runtime & boundary handling notes:</strong> <span class="todo">TODO: Briefly describe runtime comparison (4-loop → 2-loop → SciPy) and zero-padding behavior.</span></p>
+      <p><strong>Runtime:</strong> Compared to the selfimplemented code the library uses a C implementation of the convolution, which is highly optimited</p>
       <div class="grid">
         <figure class="g-6">
           <img src="<PATH>/part1/box9x9.png" alt="9x9 box kernel visualization" />
@@ -51,8 +51,25 @@
         </figure>
       </div>
       <p><strong>Code snippets (include exactly what you used):</strong></p>
-      <pre><code>// 4-loop convolution (replace with your code)
-<span class="todo">TODO</span>
+      <pre><code>def conv4loops(image, kernel):
+
+    image_height, image_width = image.shape
+    kernel_height, kernel_width = kernel.shape
+
+    pad_height = kernel_height // 2
+    pad_width = kernel_width // 2
+
+    padded_image = np.pad(image, ((pad_height, pad_height), (pad_width, pad_width)), mode='constant', constant_values=0)
+
+    output = np.zeros_like(image)
+
+    for i in range(image_height):
+        for j in range(image_width):
+            for m in range(kernel_height):
+                for n in range(kernel_width):
+                    output[i, j] += padded_image[i + m, j + n] * kernel[m, n]
+
+    return output
 </code></pre>
       <pre><code>// 2-loop convolution (replace with your code)
 <span class="todo">TODO</span>
