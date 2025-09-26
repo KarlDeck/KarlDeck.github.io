@@ -3,367 +3,169 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CS180 Project 2 — Fun with Filters & Frequencies</title>
-  <meta name="description" content="Berkeley CS180/CS280A Project 2 webpage: Fun with Filters and Frequencies — results, write-up, and code snippets." />
+  <title>CS180 / CS280A – Project 2: Fun with Filters & Frequencies</title>
   <style>
-    :root {
-      --bg: #0b0e14;
-      --panel: #11161f;
-      --muted: #6b7a90;
-      --text: #e6edf3;
-      --accent: #27c1a7;
-      --accent-2: #8ab4f8;
-      --border: #1f2632;
-      --code-bg: #0f141b;
-      --kbd: #0c1016;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-    }
-    .light {
-      --bg: #f8fafc;
-      --panel: #ffffff;
-      --muted: #475569;
-      --text: #0f172a;
-      --accent: #0ea5e9;
-      --accent-2: #16a34a;
-      --border: #e2e8f0;
-      --code-bg: #0f172a;
-      --kbd: #e2e8f0;
-      --shadow: 0 10px 30px rgba(2,6,23,.08);
-    }
-
-    html,body { height:100%; }
-    body {
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: var(--bg); color: var(--text); line-height:1.55;
-    }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    /* Layout */
-    .wrap { max-width: 1240px; margin: 0 auto; padding: 28px 20px 64px; display:grid; grid-template-columns: 280px 1fr; gap: 28px; }
-    @media (max-width: 1020px) { .wrap { grid-template-columns: 1fr; } nav { position: static !important; top: auto !important; } }
-
-    header {
-      position: sticky; top:0; z-index: 50; background: color-mix(in srgb, var(--bg) 84%, transparent); backdrop-filter: blur(6px);
-      border-bottom: 1px solid var(--border);
-    }
-    .h-inner { max-width:1240px; margin:0 auto; padding: 14px 20px; display:flex; align-items:center; gap:12px; }
-    .logo { width:36px; height:36px; border-radius:8px; overflow:hidden; display:grid; place-items:center; background:#003262; box-shadow: var(--shadow);}/* Berkeley blue */
-    .logo img { width:30px; height:30px; object-fit: contain; filter: drop-shadow(0 1px 1px rgba(0,0,0,.4)); }
-    .title { display:flex; flex-direction:column; gap:2px; }
-    .title h1 { margin:0; font-size: 18px; letter-spacing:.2px; }
-    .title p { margin:0; font-size: 12px; color: var(--muted); }
-
-    .actions { margin-left:auto; display:flex; gap:10px; align-items:center; }
-    .btn { appearance:none; border:1px solid var(--border); background: var(--panel); color: var(--text); padding:8px 12px; border-radius:12px; cursor:pointer; box-shadow: var(--shadow); font-weight:600; }
-    .btn:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--border)); }
-    .btn.secondary { background: transparent; }
-
-    /* Nav */
-    nav { position: sticky; top:72px; align-self:start; }
-    .card { background: var(--panel); border:1px solid var(--border); border-radius:16px; box-shadow: var(--shadow); overflow:hidden; }
-    .toc { padding: 14px; }
-    .toc h3 { margin: 8px 8px 6px; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
-    .toc a { display:block; padding: 9px 10px; border-radius:8px; color: var(--text); font-size: 14px; }
-    .toc a:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); text-decoration:none; }
-    .toc .sub { padding-left: 12px; }
-
-    main .panel { padding: 22px; border-radius: 16px; background: var(--panel); border:1px solid var(--border); box-shadow: var(--shadow); }
-    h2 { margin-top: 8px; font-size: 24px; }
-    h3 { font-size: 18px; margin-top: 24px; }
-
-    .meta { display:flex; flex-wrap:wrap; gap:10px; color: var(--muted); font-size: 13px; }
-    .k { background: var(--kbd); padding:2px 8px; border-radius:8px; border:1px solid var(--border); }
-
-    /* Figure grid */
-    .grid { display:grid; gap:14px; grid-template-columns: repeat(12, 1fr); }
-    .g-4 { grid-column: span 4; }
-    .g-6 { grid-column: span 6; }
-    .g-12 { grid-column: span 12; }
-    @media (max-width: 860px) { .g-4,.g-6,.g-12 { grid-column: span 12; } }
-
-    figure { margin:0; border:1px solid var(--border); border-radius:12px; overflow:hidden; background: #0a0f15; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial; color: #0f172a; background: #ffffff; }
+    header { border-bottom: 1px solid #e2e8f0; padding: 16px 20px; }
+    main { max-width: 960px; margin: 0 auto; padding: 24px 20px 80px; }
+    h1, h2, h3 { margin: 0 0 12px; }
+    h2 { margin-top: 28px; padding-top: 8px; border-top: 1px solid #e2e8f0; }
+    p { margin: 8px 0 14px; }
+    .grid { display: grid; gap: 12px; grid-template-columns: repeat(12, 1fr); }
+    .g-4 { grid-column: span 4; } .g-6 { grid-column: span 6; } .g-12 { grid-column: span 12; }
+    @media (max-width: 860px){ .g-4,.g-6,.g-12{ grid-column: span 12; } }
+    figure { margin: 0; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; background: #f8fafc; }
     figure img { display:block; width:100%; height:auto; }
-    figcaption { padding:8px 10px; font-size: 13px; color: var(--muted); background: linear-gradient(to bottom, rgba(0,0,0,.02), rgba(0,0,0,.04)); }
-
-    /* Code */
-    pre { background: var(--code-bg); color: #e2e8f0; border-radius: 12px; padding: 14px; overflow:auto; border:1px solid var(--border); position: relative; }
-    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 13px; }
-    .copy { position:absolute; top:8px; right:8px; }
-
-    details { border:1px solid var(--border); border-radius:12px; padding:8px 10px; background: color-mix(in srgb, var(--panel) 94%, transparent); }
-    details + details { margin-top:10px; }
-    summary { cursor:pointer; font-weight:600; }
-
-    .note { border-left: 3px solid var(--accent); padding: 10px 12px; background: color-mix(in srgb, var(--accent) 6%, transparent); border-radius: 8px; }
-    .two-col { columns:2; column-gap: 22px; }
-    @media (max-width: 860px) { .two-col { columns:1; } }
-
-    footer { max-width:1240px; margin: 40px auto 80px; padding: 0 20px; color: var(--muted); }
-    .inline-badges { display:flex; gap:8px; flex-wrap:wrap; }
-    .badge { border:1px solid var(--border); background: var(--panel); border-radius:999px; padding:4px 10px; font-size:12px; }
-
-    /* Print */
-    @media print {
-      header, nav, .actions { display:none !important; }
-      body { background: white; color:black; }
-      .panel, .card { box-shadow: none; border: none; }
-      a { color: black; text-decoration: none; }
-    }
+    figcaption { padding: 8px 10px; font-size: 13px; color: #475569; background: #f1f5f9; }
+    pre { background: #0f172a; color: #e2e8f0; padding: 14px; border-radius: 10px; overflow: auto; font-size: 13px; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    .todo { color: #b91c1c; font-weight: 600; }
   </style>
 </head>
 <body>
   <header>
-    <div class="h-inner">
-      <div class="logo" aria-label="UC Berkeley">
-        <!-- Replace src with your local logo asset if desired -->
-        <img alt="Berkeley Seal" src="assets/berkeley-seal.svg" />
-      </div>
-      <div class="title">
-        <h1>CS180 / CS280A — Project 2: Fun with Filters & Frequencies</h1>
-        <p>University of California, Berkeley — Fall 2025 · Due: Sep 26, 2025, 11:59pm PT</p>
-      </div>
-      <div class="actions">
-        <button class="btn secondary" id="themeToggle" title="Toggle light/dark">🌗 Theme</button>
-        <a class="btn" href="code.zip" download>⬇️ Download Code</a>
-        <a class="btn" href="https://forms.gle/" target="_blank" rel="noreferrer">📮 Submit to Gallery</a>
-      </div>
-    </div>
+    <h1>CS180 / CS280A — Project 2: Fun with Filters & Frequencies</h1>
+    <p>University of California, Berkeley — Fall 2025 · Due: Sep 26, 2025, 11:59pm PT</p>
   </header>
 
-  <div class="wrap">
-    <!-- Sidebar / TOC -->
-    <nav>
-      <div class="card toc">
-        <h3>Contents</h3>
-        <a href="#overview">Overview</a>
-        <a href="#part1">Part 1 · Filters & Edges</a>
-          <div class="sub">
-            <a href="#p11">1.1 Convolutions from Scratch</a>
-            <a href="#p12">1.2 Finite Differences</a>
-            <a href="#p13">1.3 DoG Filter</a>
-          </div>
-        <a href="#part2">Part 2 · Applications</a>
-          <div class="sub">
-            <a href="#p21">2.1 Unsharp Mask</a>
-            <a href="#p22">2.2 Hybrid Images</a>
-            <a href="#p23">2.3 Gaussian & Laplacian Stacks</a>
-            <a href="#p24">2.4 Multiresolution Blending</a>
-          </div>
-        <a href="#learnings">Most Important Learning</a>
-        <a href="#scoring">Scoring & Checklist</a>
+  <main>
+    <section id="overview">
+      <h2>Overview</h2>
+      <p>Results and minimal write-up for each required deliverable. Replace every <span class="todo">TODO</span> with your outputs (images and code) — nothing extra is included.</p>
+    </section>
+
+    <!-- ========================= Part 1 ========================= -->
+    <section id="part1">
+      <h2>Part 1 — Filters & Edges</h2>
+
+      <h3 id="p11">1.1 Convolutions from Scratch (NumPy only)</h3>
+      <p><strong>Runtime & boundary handling notes:</strong> <span class="todo">TODO: Briefly describe runtime comparison (4-loop → 2-loop → SciPy) and zero-padding behavior.</span></p>
+      <div class="grid">
+        <figure class="g-6">
+          <img src="<PATH>/part1/box9x9.png" alt="9x9 box kernel visualization" />
+          <figcaption>9×9 box kernel (visualization)</figcaption>
+        </figure>
+        <figure class="g-6">
+          <img src="<PATH>/part1/self_box_blur.png" alt="Self-portrait convolved with 9x9 box filter" />
+          <figcaption>Grayscale self-portrait blurred by 9×9 box filter</figcaption>
+        </figure>
       </div>
-      <div class="card toc" style="margin-top:14px;">
-        <h3>Quick Facts</h3>
-        <div class="meta">
-          <span class="k">Language: Python / NumPy</span>
-          <span class="k">Libs: SciPy · OpenCV · Matplotlib</span>
-          <span class="k">All images &lt; 0.8 MB</span>
-        </div>
+      <p><strong>Code snippets (include exactly what you used):</strong></p>
+      <pre><code>// 4-loop convolution (replace with your code)
+<span class="todo">TODO</span>
+</code></pre>
+      <pre><code>// 2-loop convolution (replace with your code)
+<span class="todo">TODO</span>
+</code></pre>
+      <pre><code>// SciPy comparison call (replace with your code)
+<span class="todo">TODO</span>
+</code></pre>
+
+      <h3 id="p12">1.2 Finite Difference Operator</h3>
+      <div class="grid">
+        <figure class="g-4"><img src="<PATH>/part1/cameraman.png" alt="Cameraman" /><figcaption>Input (Cameraman)</figcaption></figure>
+        <figure class="g-4"><img src="<PATH>/part1/cameraman_dx.png" alt="dx" /><figcaption>∂I/∂x via D<sub>x</sub></figcaption></figure>
+        <figure class="g-4"><img src="<PATH>/part1/cameraman_dy.png" alt="dy" /><figcaption>∂I/∂y via D<sub>y</sub></figcaption></figure>
+        <figure class="g-6"><img src="<PATH>/part1/cameraman_gradmag.png" alt="grad mag" /><figcaption>Gradient magnitude</figcaption></figure>
+        <figure class="g-6"><img src="<PATH>/part1/cameraman_edges.png" alt="edges" /><figcaption>Binarized edges (threshold chosen qualitatively)</figcaption></figure>
       </div>
-    </nav>
+      <pre><code>// D_x, D_y, magnitude, thresholding (replace with your code)
+<span class="todo">TODO</span>
+</code></pre>
 
-    <!-- Main content -->
-    <main>
-      <section id="overview" class="panel">
-        <h2>Project Overview</h2>
-        <p class="two-col">
-          This page presents my results for <strong>CS180/CS280A Project 2</strong>. I implemented 2D convolutions from scratch, explored edge detection via finite differences and Derivative-of-Gaussian (DoG) filters, built <em>Gaussian</em> and <em>Laplacian</em> stacks, and applied these tools to <em>unsharp masking</em>, <em>hybrid images</em>, and <em>multiresolution blending</em> (the classic “oraple”).
-        </p>
-        <div class="note"><strong>Reproducibility.</strong> Every figure on this page is generated by the accompanying notebook/scripts. See <em>code.zip</em> for exact parameters.</div>
-      </section>
+      <h3 id="p13">1.3 Derivative of Gaussian (DoG)</h3>
+      <div class="grid">
+        <figure class="g-6"><img src="<PATH>/part1/gaussian_kernel.png" alt="gaussian kernel" /><figcaption>Gaussian kernel (σ shown)</figcaption></figure>
+        <figure class="g-6"><img src="<PATH>/part1/dog_kernels.png" alt="DoG filters" /><figcaption>DoG filters (G*D<sub>x</sub>, G*D<sub>y</sub>)</figcaption></figure>
+        <figure class="g-6"><img src="<PATH>/part1/cameraman_dog_dx.png" alt="DoG dx" /><figcaption>DoG response (x)</figcaption></figure>
+        <figure class="g-6"><img src="<PATH>/part1/cameraman_dog_dy.png" alt="DoG dy" /><figcaption>DoG response (y)</figcaption></figure>
+      </div>
+      <p><strong>Comment on differences vs. raw finite differences:</strong> <span class="todo">TODO</span></p>
+      <pre><code>// Gaussian creation via cv2.getGaussianKernel, DoG application (replace with your code)
+<span class="todo">TODO</span>
+</code></pre>
+      <p><em>(Bells & Whistles)</em> Gradient orientations in HSV:</p>
+      <figure class="g-12"><img src="<PATH>/part1/cameraman_orientation_hsv.png" alt="HSV orientation" /><figcaption>Hue = orientation; value = magnitude</figcaption></figure>
+      <pre><code>// Orientation (no built-in angle functions) (replace with your code)
+<span class="todo">TODO</span>
+</code></pre>
+    </section>
 
-      <!-- Part 1 -->
-      <section id="part1" class="panel">
-        <h2>Part 1 — Fun with Filters</h2>
-        <p>I begin with finite-difference operators and build toward smoothed derivatives (DoG). Below I compare custom NumPy implementations with <code>scipy.signal.convolve2d</code>.</p>
+    <!-- ========================= Part 2 ========================= -->
+    <section id="part2">
+      <h2>Part 2 — Applications</h2>
 
-        <h3 id="p11">1.1 Convolutions from Scratch</h3>
-        <details open>
-          <summary>Method & Runtime Notes</summary>
-          <p>Four-loop &rarr; two-loop (vectorized rows/cols) &rarr; library comparison. Zero-padding used at boundaries.</p>
-        </details>
-        <div class="grid" style="margin-top:12px;">
-          <figure class="g-6">
-            <img src="assets/part1/box9x9.png" alt="9x9 box kernel visualization"/>
-            <figcaption>9×9 box kernel (visualization).</figcaption>
-          </figure>
-          <figure class="g-6">
-            <img src="assets/part1/self_box_blur.png" alt="Self-portrait convolved with 9x9 box filter"/>
-            <figcaption>Grayscale self-portrait blurred by 9×9 box filter.</figcaption>
-          </figure>
-          <figure class="g-12">
-            <img src="assets/part1/convolution_runtime.png" alt="Runtime vs method chart"/>
-            <figcaption>Runtime comparison: 4-loop &rarr; 2-loop &rarr; SciPy. (Lower is better.)</figcaption>
-          </figure>
-        </div>
+      <h3 id="p21">2.1 Image "Sharpening" (Unsharp Mask)</h3>
+      <div class="grid">
+        <figure class="g-4"><img src="<PATH>/part2/taj_original.png" alt="taj original" /><figcaption>Original (Taj)</figcaption></figure>
+        <figure class="g-4"><img src="<PATH>/part2/taj_blur.png" alt="taj blur" /><figcaption>Blurred (Gaussian)</figcaption></figure>
+        <figure class="g-4"><img src="<PATH>/part2/taj_high.png" alt="taj high" /><figcaption>High frequencies (I − G*I)</figcaption></figure>
+        <figure class="g-6"><img src="<PATH>/part2/taj_sharp_a.png" alt="taj sharpened a" /><figcaption>Sharpened (α = <span class="todo">0.3</span>)</figcaption></figure>
+        <figure class="g-6"><img src="<PATH>/part2/taj_sharp_b.png" alt="taj sharpened b" /><figcaption>Sharpened (α = <span class="todo">0.7</span>)</figcaption></figure>
+      </div>
+      <p><strong>Blur → Sharpen sanity check:</strong></p>
+      <div class="grid">
+        <figure class="g-6"><img src="<PATH>/part2/sharp_source.png" alt="sharp source" /><figcaption>Sharp source</figcaption></figure>
+        <figure class="g-6"><img src="<PATH>/part2/sharp_blur.png" alt="blur then sharpen" /><figcaption>Blur then sharpen (compare to source)</figcaption></figure>
+      </div>
+      <pre><code>// Unsharp mask implementation (single-convolution form) (replace with your code)
+<span class="todo">TODO</span>
+</code></pre>
 
-        <details>
-          <summary>Code Snippet (Two-Loop Convolution)</summary>
-          <button class="btn copy" data-copy="code-p11">Copy</button>
-          <pre><code id="code-p11">def conv2_two_loops(image, kernel):
-    import numpy as np
-    H, W = image.shape
-    kh, kw = kernel.shape
-    ph, pw = kh//2, kw//2
-    padded = np.pad(image, ((ph, ph), (pw, pw)), mode='constant', constant_values=0)
-    out = np.zeros_like(image, dtype=np.float32)
-    k = np.flipud(np.fliplr(kernel))  # true convolution
-    for i in range(H):
-        for j in range(W):
-            region = padded[i:i+kh, j:j+kw]
-            out[i, j] = np.sum(region * k)
-    return out</code></pre>
-        </details>
+      <h3 id="p22">2.2 Hybrid Images</h3>
+      <div class="grid">
+        <figure class="g-6"><img src="<PATH>/part2/derek.png" alt="Derek" /><figcaption>Derek (low-pass)</figcaption></figure>
+        <figure class="g-6"><img src="<PATH>/part2/nutmeg.png" alt="Nutmeg" /><figcaption>Nutmeg (high-pass)</figcaption></figure>
+        <figure class="g-12"><img src="<PATH>/part2/hybrid_d+n.png" alt="hybrid" /><figcaption>Hybrid result (Derek ⊕ Nutmeg)</figcaption></figure>
+      </div>
+      <p><strong>Frequency analysis (one example):</strong></p>
+      <div class="grid">
+        <figure class="g-4"><img src="<PATH>/part2/fft_derek.png" alt="fft derek" /><figcaption>log|FFT| Derek</figcaption></figure>
+        <figure class="g-4"><img src="<PATH>/part2/fft_nutmeg.png" alt="fft nutmeg" /><figcaption>log|FFT| Nutmeg</figcaption></figure>
+        <figure class="g-4"><img src="<PATH>/part2/fft_hybrid.png" alt="fft hybrid" /><figcaption>log|FFT| Hybrid</figcaption></figure>
+      </div>
+      <div class="grid" style="margin-top:12px;">
+        <figure class="g-6"><img src="<PATH>/part2/hybrid_custom1.png" alt="hybrid 1" /><figcaption>Hybrid #2</figcaption></figure>
+        <figure class="g-6"><img src="<PATH>/part2/hybrid_custom2.png" alt="hybrid 2" /><figcaption>Hybrid #3</figcaption></figure>
+      </div>
+      <pre><code>// Low-pass, high-pass, alignment snippet(s) (replace with your code)
+<span class="todo">TODO</span>
+</code></pre>
 
-        <h3 id="p12">1.2 Finite Difference Operator</h3>
-        <div class="grid">
-          <figure class="g-4"><img src="assets/part1/cameraman.png" alt="Cameraman"/><figcaption>Input (Cameraman)</figcaption></figure>
-          <figure class="g-4"><img src="assets/part1/cameraman_dx.png" alt="dx"/><figcaption>∂I/∂x via D<sub>x</sub></figcaption></figure>
-          <figure class="g-4"><img src="assets/part1/cameraman_dy.png" alt="dy"/><figcaption>∂I/∂y via D<sub>y</sub></figcaption></figure>
-          <figure class="g-6"><img src="assets/part1/cameraman_gradmag.png" alt="grad mag"/><figcaption>Gradient magnitude</figcaption></figure>
-          <figure class="g-6"><img src="assets/part1/cameraman_edges.png" alt="edges"/><figcaption>Binarized edges (chosen threshold annotated)</figcaption></figure>
-        </div>
+      <h3 id="p23">2.3 Gaussian & Laplacian Stacks</h3>
+      <div class="grid">
+        <figure class="g-12"><img src="<PATH>/part2/oraple_levels.png" alt="stacks montage" /><figcaption>Gaussian & Laplacian stacks for apple/orange (multi-level montage)</figcaption></figure>
+      </div>
+      <p><strong>Szelski Fig. 3.42 (a–l) recreation:</strong></p>
+      <div class="grid">
+        <figure class="g-6"><img src="<PATH>/part2/szelski_a_to_f.png" alt="a-f" /><figcaption>(a)–(f)</figcaption></figure>
+        <figure class="g-6"><img src="<PATH>/part2/szelski_g_to_l.png" alt="g-l" /><figcaption>(g)–(l)</figcaption></figure>
+      </div>
+      <pre><code>// Gaussian/Laplacian stack construction (no built-in pyramid funcs) (replace with your code)
+<span class="todo">TODO</span>
+</code></pre>
 
-        <h3 id="p13">1.3 Derivative of Gaussian (DoG) Filter</h3>
-        <div class="grid">
-          <figure class="g-6"><img src="assets/part1/gaussian_kernel.png" alt="gaussian kernel"/><figcaption>Gaussian kernel (σ annotated)</figcaption></figure>
-          <figure class="g-6"><img src="assets/part1/dog_kernels.png" alt="DoG filters"/><figcaption>DoG filters (G * D<sub>x</sub>, G * D<sub>y</sub>)</figcaption></figure>
-          <figure class="g-6"><img src="assets/part1/cameraman_dog_dx.png" alt="DoG dx"/><figcaption>DoG response (x)</figcaption></figure>
-          <figure class="g-6"><img src="assets/part1/cameraman_dog_dy.png" alt="DoG dy"/><figcaption>DoG response (y)</figcaption></figure>
-        </div>
-        <details>
-          <summary>Bells & Whistles: Orientation in HSV</summary>
-          <div class="grid" style="margin-top:10px;">
-            <figure class="g-12"><img src="assets/part1/cameraman_orientation_hsv.png" alt="HSV orientation"/><figcaption>Hue encodes orientation; value encodes magnitude.</figcaption></figure>
-          </div>
-        </details>
-      </section>
+      <h3 id="p24">2.4 Multiresolution Blending (Oraple)</h3>
+      <div class="grid">
+        <figure class="g-6"><img src="<PATH>/part2/apple.png" alt="apple" /><figcaption>Apple</figcaption></figure>
+        <figure class="g-6"><img src="<PATH>/part2/orange.png" alt="orange" /><figcaption>Orange</figcaption></figure>
+        <figure class="g-12"><img src="<PATH>/part2/oraple.png" alt="oraple" /><figcaption>Final blend (mask-based, stack-aware)</figcaption></figure>
+      </div>
+      <p><strong>Irregular masks + Laplacian illustration:</strong></p>
+      <div class="grid">
+        <figure class="g-6"><img src="<PATH>/part2/custom_blend1.png" alt="custom blend 1" /><figcaption>Custom blend #1 (irregular mask)</figcaption></figure>
+        <figure class="g-6"><img src="<PATH>/part2/custom_blend2.png" alt="custom blend 2" /><figcaption>Custom blend #2</figcaption></figure>
+        <figure class="g-12"><img src="<PATH>/part2/laplacian_illustration.png" alt="laplacian levels" /><figcaption>Laplacian stack levels + masked inputs</figcaption></figure>
+      </div>
+      <pre><code>// Multiresolution blending using mask Gaussian stack (replace with your code)
+<span class="todo">TODO</span>
+</code></pre>
+    </section>
 
-      <!-- Part 2 -->
-      <section id="part2" class="panel">
-        <h2>Part 2 — Fun with Frequencies</h2>
-
-        <h3 id="p21">2.1 Image “Sharpening” (Unsharp Mask)</h3>
-        <div class="grid">
-          <figure class="g-4"><img src="assets/part2/taj_original.png" alt="taj original"/><figcaption>Original (Taj)</figcaption></figure>
-          <figure class="g-4"><img src="assets/part2/taj_blur.png" alt="taj blur"/><figcaption>Blurred (Gaussian)</figcaption></figure>
-          <figure class="g-4"><img src="assets/part2/taj_high.png" alt="taj high"/><figcaption>High frequencies (I − G*I)</figcaption></figure>
-          <figure class="g-6"><img src="assets/part2/taj_sharp_a.png" alt="taj sharpened a"/><figcaption>Sharpened (α = 0.3)</figcaption></figure>
-          <figure class="g-6"><img src="assets/part2/taj_sharp_b.png" alt="taj sharpened b"/><figcaption>Sharpened (α = 0.7)</figcaption></figure>
-        </div>
-        <details>
-          <summary>Blur→Sharpen sanity check</summary>
-          <div class="grid" style="margin-top:10px;">
-            <figure class="g-6"><img src="assets/part2/sharp_source.png" alt="sharp source"/><figcaption>Sharp source</figcaption></figure>
-            <figure class="g-6"><img src="assets/part2/sharp_blur.png" alt="blur then sharpen"/><figcaption>Blur then sharpen (compare to source)</figcaption></figure>
-          </div>
-        </details>
-
-        <h3 id="p22">2.2 Hybrid Images</h3>
-        <p>High-pass ⊕ low-pass = perception shifts with distance.</p>
-        <div class="grid">
-          <figure class="g-6"><img src="assets/part2/derek.png" alt="Derek"/><figcaption>Derek (low-pass)</figcaption></figure>
-          <figure class="g-6"><img src="assets/part2/nutmeg.png" alt="Nutmeg"/><figcaption>Nutmeg (high-pass)</figcaption></figure>
-          <figure class="g-12"><img src="assets/part2/hybrid_d+n.png" alt="hybrid"/><figcaption>Hybrid result (Derek ⊕ Nutmeg)</figcaption></figure>
-        </div>
-        <details>
-          <summary>Frequency Analysis (one example)</summary>
-          <div class="grid" style="margin-top:10px;">
-            <figure class="g-4"><img src="assets/part2/fft_derek.png" alt="fft derek"/><figcaption>log|FFT| Derek</figcaption></figure>
-            <figure class="g-4"><img src="assets/part2/fft_nutmeg.png" alt="fft nutmeg"/><figcaption>log|FFT| Nutmeg</figcaption></figure>
-            <figure class="g-4"><img src="assets/part2/fft_hybrid.png" alt="fft hybrid"/><figcaption>log|FFT| Hybrid</figcaption></figure>
-          </div>
-        </details>
-        <div class="grid" style="margin-top:12px;">
-          <figure class="g-6"><img src="assets/part2/hybrid_custom1.png" alt="hybrid 1"/><figcaption>Hybrid #2</figcaption></figure>
-          <figure class="g-6"><img src="assets/part2/hybrid_custom2.png" alt="hybrid 2"/><figcaption>Hybrid #3</figcaption></figure>
-        </div>
-        <details>
-          <summary>Bells & Whistles: Color choices</summary>
-          <p>Brief note justifying whether color was better for low-frequency, high-frequency, or both.</p>
-        </details>
-
-        <h3 id="p23">2.3 Gaussian & Laplacian Stacks</h3>
-        <p>Stacks maintain original resolution at each level (no downsampling). Laplacian = difference between successive Gaussian levels.</p>
-        <div class="grid">
-          <figure class="g-12"><img src="assets/part2/oraple_levels.png" alt="stacks montage"/><figcaption>Gaussian & Laplacian stacks for apple/orange (multi-level montage).</figcaption></figure>
-        </div>
-        <details>
-          <summary>Szelski Figure 3.42 (a–l) recreation</summary>
-          <div class="grid" style="margin-top:10px;">
-            <figure class="g-6"><img src="assets/part2/szelski_a_to_f.png" alt="a-f"/><figcaption>(a)–(f)</figcaption></figure>
-            <figure class="g-6"><img src="assets/part2/szelski_g_to_l.png" alt="g-l"/><figcaption>(g)–(l)</figcaption></figure>
-          </div>
-        </details>
-
-        <h3 id="p24">2.4 Multiresolution Blending (Oraple)</h3>
-        <div class="grid">
-          <figure class="g-6"><img src="assets/part2/apple.png" alt="apple"/><figcaption>Apple</figcaption></figure>
-          <figure class="g-6"><img src="assets/part2/orange.png" alt="orange"/><figcaption>Orange</figcaption></figure>
-          <figure class="g-12"><img src="assets/part2/oraple.png" alt="oraple"/><figcaption>Final blend (mask-based, stack-aware)</figcaption></figure>
-        </div>
-        <details>
-          <summary>Irregular masks + Laplacian illustration</summary>
-          <div class="grid" style="margin-top:10px;">
-            <figure class="g-6"><img src="assets/part2/custom_blend1.png" alt="custom blend 1"/><figcaption>Custom blend #1 (irregular mask)</figcaption></figure>
-            <figure class="g-6"><img src="assets/part2/custom_blend2.png" alt="custom blend 2"/><figcaption>Custom blend #2</figcaption></figure>
-            <figure class="g-12"><img src="assets/part2/laplacian_illustration.png" alt="laplacian levels"/><figcaption>Laplacian stack levels + masked inputs for favorite blend.</figcaption></figure>
-          </div>
-        </details>
-      </section>
-
-      <section id="learnings" class="panel">
-        <h2>Most Important Thing I Learned</h2>
-        <p>Write a concise reflection here — e.g., “Mask blurring across scales is crucial for seamless multiresolution blending; naïve stack combination leaves visible seams.”</p>
-      </section>
-
-      <section id="scoring" class="panel">
-        <h2>Scoring & Submission Checklist</h2>
-        <ul>
-          <li>✔️ <strong>Part 1.1</strong>: Convolution (NumPy-only) + runtime & boundary discussion</li>
-          <li>✔️ <strong>Part 1.2</strong>: ∂/∂x, ∂/∂y, |∇I|, thresholded edges</li>
-          <li>✔️ <strong>Part 1.3</strong>: Gaussian via <code>cv2.getGaussianKernel</code>, DoG visualization & results; orientation HSV (B&W)</li>
-          <li>✔️ <strong>Part 2.1</strong>: Unsharp mask on Taj + one more; α sweep; blur→sharpen check</li>
-          <li>✔️ <strong>Part 2.2</strong>: 3 hybrids (incl. Derek+Nutmeg) + 1 with FFT analysis; color commentary</li>
-          <li>✔️ <strong>Part 2.3</strong>: Stacks visualized; Szelski Fig 3.42 (a–l) recreation</li>
-          <li>✔️ <strong>Part 2.4</strong>: Oraple + 2 custom blends, one with irregular mask; Laplacian illustration</li>
-          <li>✔️ <strong>Clarity</strong>: Captions, organization, clean layout</li>
-        </ul>
-        <div class="inline-badges">
-          <span class="badge">Made with Python</span>
-          <span class="badge">No built-in pyramids</span>
-          <span class="badge">All assets &lt; 0.8 MB</span>
-        </div>
-      </section>
-    </main>
-  </div>
-
-  <footer>
-    <p>© 2025 — Your Name · CS180/CS280A · UC Berkeley</p>
-  </footer>
-
-  <script>
-    // Theme toggle (persists in localStorage)
-    const root = document.documentElement;
-    function setTheme(light) { document.body.classList.toggle('light', !!light); }
-    setTheme(localStorage.getItem('theme') === 'light');
-    document.getElementById('themeToggle').addEventListener('click', () => {
-      const next = !(document.body.classList.contains('light'));
-      setTheme(next); localStorage.setItem('theme', next ? 'light' : 'dark');
-    });
-
-    // Copy buttons
-    document.querySelectorAll('.btn.copy').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-copy');
-        const el = document.getElementById(id);
-        navigator.clipboard.writeText(el.textContent).then(() => {
-          const prev = btn.textContent; btn.textContent = 'Copied!';
-          setTimeout(() => btn.textContent = 'Copy', 1200);
-        });
-      });
-    });
-  </script>
+    <section id="learning">
+      <h2>Most Important Thing I Learned</h2>
+      <p><span class="todo">TODO: 2–3 sentence reflection directly tied to your experiments (e.g., mask blurring across scales is essential to avoid seams; DoG reduces noise vs. raw finite differences, etc.).</span></p>
+    </section>
+  </main>
 </body>
 </html>
