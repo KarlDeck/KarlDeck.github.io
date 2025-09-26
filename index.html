@@ -234,12 +234,10 @@
       <a href="#" class="brand" aria-label="Home">
         <div class="logo">CS</div>
         <div class="title">
-          <h1>CS180 Portfolio</h1>
-          <p>Computational Photography • Fall 2025</p>
+          <h1>CS 180 Portfolio</h1>
+          <p>Computational Photography @ UC Berkeley • Fall 2025</p>
         </div>
       </a>
-      <button class="theme-toggle" id="themeBtn" aria-label="Toggle theme">🌓 Theme</button>
-    </header>
 
     <section class="card hero">
       <div>
@@ -253,7 +251,7 @@
         <a class="tile" href="./0/index.html">
           <span class="badge">P0 · Setup</span>
           <h3>Project 0 – Warmup</h3>
-          <p>Image I/O, display helpers, and a tiny tour of the starter pipeline.</p>
+          <p>Some cool photography effects.</p>
         </a>
 
         <a class="tile" href="./1/index.html">
@@ -271,7 +269,7 @@
     </section>
 
     <footer>
-      © <span id="year"></span> Your Name • Made with HTML/CSS
+      © <span id="year"></span> Karl Aurel Deck
     </footer>
   </div>
 
@@ -279,21 +277,6 @@
     // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Theme toggle: auto/light/dark cycle
-    const html = document.documentElement;
-    const btn = document.getElementById('themeBtn');
-
-    function getMode(){
-      return html.getAttribute('data-theme') || 'auto';
-    }
-    function setMode(mode){
-      html.setAttribute('data-theme', mode);
-      localStorage.setItem('theme', mode);
-      btn.textContent = (mode === 'dark') ? '🌞 Light' : (mode === 'light') ? '🌚 Dark' : '🌓 Theme';
-      btn.setAttribute('aria-label', `Switch theme (current: ${mode})`);
-    }
-    // Initialize from storage or auto
-    setMode(localStorage.getItem('theme') || 'auto');
 
     btn.addEventListener('click', () => {
       const order = ['auto', 'dark', 'light']; // cycle
