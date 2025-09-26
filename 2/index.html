@@ -49,9 +49,18 @@
           <img src="<PATH>/part1/self_box_blur.png" alt="Self-portrait convolved with 9x9 box filter" />
           <figcaption>Grayscale self-portrait blurred by 9×9 box filter</figcaption>
         </figure>
+                <figure class="g-6">
+          <img src="<PATH>/part1/me_Dx.png" alt="Self-portrait D_x" />
+          <figcaption>Self-portrait D_x</figcaption>
+        </figure>
+                <figure class="g-6">
+          <img src="<PATH>/part1/me_Dy.png" alt="Self-portrait D_y" />
+          <figcaption>Self-portrait D_y</figcaption>
+        </figure>
       </div>
       <p><strong>Code snippets (include exactly what you used):</strong></p>
-      <pre><code>def conv4loops(image, kernel):
+
+<pre><code>def conv4loops(image, kernel):
 
     image_height, image_width = image.shape
     kernel_height, kernel_width = kernel.shape
@@ -71,7 +80,8 @@
 
     return output
 </code></pre>
-      <pre><code>def conv2loops(image, kernel):
+
+<pre><code>def conv2loops(image, kernel):
 
     image_height, image_width = image.shape
     kernel_height, kernel_width = kernel.shape
@@ -89,6 +99,22 @@
             output[i, j] = np.sum(region * kernel)
 
     return output
+</code></pre>
+
+<pre><code>
+image_conv2 = conv2loops(image, box_filter)
+print("Convolution with 2 loops:")
+show_image(image_conv2)
+
+image = load_image('me Small.jpeg')
+# D_x
+image_conv = conv2loops(image, D_x)
+print("D_x:")
+show_image(image_conv)
+# D_y
+image_conv = conv2loops(image, D_y)
+print("D_y:")
+show_image(image_conv)
 </code></pre>
 
       <h3 id="p12">1.2 Finite Difference Operator</h3>
