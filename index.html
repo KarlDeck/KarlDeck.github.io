@@ -1,19 +1,305 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-theme="auto">
 <head>
-    <title>My Portfolio</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My CS180 Portfolio</title>
+
+  <!-- Nice readable font (falls back cleanly if blocked) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1: 255, 255, 255;
+      --text: 20, 24, 28;
+      --muted: 100, 110, 120;
+      --card: 255, 255, 255;
+      --card-border: 225, 230, 235;
+      --accent: 68, 97, 242;
+      --accent-2: 151, 71, 255;
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg1: 10, 13, 17;
+        --text: 235, 239, 244;
+        --muted: 150, 160, 170;
+        --card: 18, 22, 28;
+        --card-border: 40, 45, 55;
+        --shadow: 0 10px 30px rgba(0,0,0,.45);
+      }
+    }
+    /* Manual theme override */
+    html[data-theme="light"] :root{
+      --bg1: 255, 255, 255;
+      --text: 20, 24, 28;
+      --muted: 100, 110, 120;
+      --card: 255, 255, 255;
+      --card-border: 225, 230, 235;
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+    html[data-theme="dark"] :root{
+      --bg1: 10, 13, 17;
+      --text: 235, 239, 244;
+      --muted: 150, 160, 170;
+      --card: 18, 22, 28;
+      --card-border: 40, 45, 55;
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
+    }
+
+    *{ box-sizing: border-box; }
+
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+      color: rgb(var(--text));
+      background:
+        radial-gradient(1200px 800px at 10% -10%, rgba(var(--accent), .25), rgba(0,0,0,0) 60%),
+        radial-gradient(1000px 700px at 110% 10%, rgba(var(--accent-2), .25), rgba(0,0,0,0) 60%),
+        linear-gradient(180deg, rgba(var(--bg1),1) 0%, rgba(var(--bg1),1) 100%);
+      min-height: 100dvh;
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 48px 20px 80px;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom: 28px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      text-decoration:none;
+      color:inherit;
+    }
+    .logo{
+      width:44px; height:44px;
+      border-radius:14px;
+      background: linear-gradient(135deg, rgba(var(--accent),1), rgba(var(--accent-2),1));
+      box-shadow: var(--shadow);
+      display:grid; place-items:center;
+      color:white; font-weight:800;
+      letter-spacing:.5px;
+    }
+    .title{
+      line-height:1.1;
+    }
+    .title h1{
+      margin:0;
+      font-size: clamp(22px, 2.6vw, 32px);
+      font-weight: 800;
+    }
+    .title p{
+      margin:6px 0 0;
+      color: rgb(var(--muted));
+      font-size: 14px;
+    }
+
+    .theme-toggle{
+      border:1px solid rgba(var(--card-border), 1);
+      background: rgba(var(--card), .6);
+      backdrop-filter: blur(8px);
+      padding: 8px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: var(--shadow);
+      transition: transform .15s ease, background .2s ease, border-color .2s ease;
+    }
+    .theme-toggle:active{ transform: translateY(1px); }
+
+    .card{
+      border:1px solid rgba(var(--card-border), 1);
+      background: rgba(var(--card), .65);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero{
+      padding: 28px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .hero h2{
+      margin: 0 0 6px 0;
+      font-size: clamp(20px, 2.2vw, 26px);
+    }
+    .hero p{
+      margin:0;
+      color: rgb(var(--muted));
+      font-size: 14px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+      padding: 18px;
+    }
+
+    .tile{
+      grid-column: span 12;
+      border:1px solid rgba(var(--card-border), 1);
+      border-radius: 16px;
+      padding: 18px;
+      text-decoration:none;
+      color: inherit;
+      background: linear-gradient(180deg, rgba(var(--card), .9), rgba(var(--card), .6));
+      transition: transform .15s ease, box-shadow .15s ease, border-color .2s ease, background .2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .tile:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0,0,0,.12);
+      border-color: rgba(var(--accent), .5);
+    }
+
+    .tile .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .3px;
+      background: rgba(var(--accent), .12);
+      border: 1px solid rgba(var(--accent), .35);
+      color: rgb(var(--text));
+    }
+
+    .tile h3{
+      margin: 12px 0 8px;
+      font-size: 20px;
+    }
+
+    .tile p{
+      margin: 0;
+      color: rgb(var(--muted));
+      font-size: 14px;
+    }
+
+    .tile::after{
+      content:"";
+      position:absolute;
+      right:-40px; bottom:-40px;
+      width:180px; height:180px;
+      background: radial-gradient(closest-side, rgba(var(--accent), .12), rgba(0,0,0,0));
+      transform: rotate(15deg);
+      pointer-events:none;
+    }
+
+    /* Responsive: two columns on medium, three on wide */
+    @media (min-width: 640px){
+      .tile{ grid-column: span 6; }
+    }
+    @media (min-width: 980px){
+      .tile{ grid-column: span 4; }
+    }
+
+    footer{
+      margin-top: 28px;
+      color: rgb(var(--muted));
+      font-size: 13px;
+      text-align:center;
+    }
+
+    /* Focus styles for a11y */
+    a:focus-visible, button:focus-visible{
+      outline: 2px solid rgb(var(--accent));
+      outline-offset: 3px;
+      border-radius: 10px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to My CS180 Portfolio!</h1>
-    <ul>
-        <li><a href="./0/index.html">Project 0</a></li>
-        <li><a href="./1/index.html">Project 1</a></li>
-    </ul>
+  <div class="wrap">
+    <header>
+      <a href="#" class="brand" aria-label="Home">
+        <div class="logo">CS</div>
+        <div class="title">
+          <h1>CS180 Portfolio</h1>
+          <p>Computational Photography • Fall 2025</p>
+        </div>
+      </a>
+      <button class="theme-toggle" id="themeBtn" aria-label="Toggle theme">🌓 Theme</button>
+    </header>
+
+    <section class="card hero">
+      <div>
+        <h2>Welcome to my projects</h2>
+        <p>Explorations in filtering, pyramids, blending, and visual effects. Click a project to see writeups, results, and code.</p>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Project list">
+      <div class="grid">
+        <a class="tile" href="./0/index.html">
+          <span class="badge">P0 · Setup</span>
+          <h3>Project 0 – Warmup</h3>
+          <p>Image I/O, display helpers, and a tiny tour of the starter pipeline.</p>
+        </a>
+
+        <a class="tile" href="./1/index.html">
+          <span class="badge">P1 · Alignment</span>
+          <h3>Project 1 – Prokudin-Gorskii</h3>
+          <p>Single-channel glass plates → aligned color images with pyramid search and edge tricks.</p>
+        </a>
+
+        <a class="tile" href="./2/index.html">
+          <span class="badge">P2 · Hybrid</span>
+          <h3>Project 2 – Hybrids & Pyramids</h3>
+          <p>Gaussian/Laplacian stacks, unsharp masking, and seamless blending (“oraple”).</p>
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> Your Name • Made with HTML/CSS
+    </footer>
+  </div>
+
+  <script>
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Theme toggle: auto/light/dark cycle
+    const html = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+
+    function getMode(){
+      return html.getAttribute('data-theme') || 'auto';
+    }
+    function setMode(mode){
+      html.setAttribute('data-theme', mode);
+      localStorage.setItem('theme', mode);
+      btn.textContent = (mode === 'dark') ? '🌞 Light' : (mode === 'light') ? '🌚 Dark' : '🌓 Theme';
+      btn.setAttribute('aria-label', `Switch theme (current: ${mode})`);
+    }
+    // Initialize from storage or auto
+    setMode(localStorage.getItem('theme') || 'auto');
+
+    btn.addEventListener('click', () => {
+      const order = ['auto', 'dark', 'light']; // cycle
+      const next = order[(order.indexOf(getMode()) + 1) % order.length];
+      setMode(next);
+    });
+  </script>
 </body>
 </html>
