@@ -71,11 +71,24 @@
 
     return output
 </code></pre>
-      <pre><code>// 2-loop convolution (replace with your code)
-<span class="todo">TODO</span>
-</code></pre>
-      <pre><code>// SciPy comparison call (replace with your code)
-<span class="todo">TODO</span>
+      <pre><code>def conv2loops(image, kernel):
+
+    image_height, image_width = image.shape
+    kernel_height, kernel_width = kernel.shape
+
+    pad_height = kernel_height // 2
+    pad_width = kernel_width // 2
+
+    padded_image = np.pad(image, ((pad_height, pad_height), (pad_width, pad_width)), mode='constant', constant_values=0)
+
+    output = np.zeros_like(image)
+
+    for i in range(image_height):
+        for j in range(image_width):
+            region = padded_image[i:i + kernel_height, j:j + kernel_width]
+            output[i, j] = np.sum(region * kernel)
+
+    return output
 </code></pre>
 
       <h3 id="p12">1.2 Finite Difference Operator</h3>
