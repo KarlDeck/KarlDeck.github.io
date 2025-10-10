@@ -52,7 +52,7 @@
 
     <!-- ------------------- A.1 ------------------- -->
     <section id="a1">
-      <h2>A.1 — Shoot the Pictures <span class="badge">20 pts</span></h2>
+      <h2>A.1 — Shoot the Pictures</h2>
       <div class="grid">
         <figure class="g-6"><img src="pic1left.jpg" alt="Set 1 - Image 1" /><figcaption>Set 1 — Image 1</figcaption></figure>
         <figure class="g-6"><img src="pic1right.jpg" alt="Set 1 - Image 2" /><figcaption>Set 1 — Image 2</figcaption></figure>
@@ -65,30 +65,64 @@
 
     <!-- ------------------- A.2 ------------------- -->
     <section id="a2">
-      <h2>A.2 — Recover Homographies <span class="badge">20 pts</span></h2>
-      <p>Given n point correspondences <code>(p, p')</code>, solve <span class="mono">p' = H p</span> for the 3×3 homography <code>H</code> (8 dof, set <code>H[2,2]=1</code> or normalize post‑hoc). Use <em>more than four</em> correspondences and solve via least squares — four points is unstable.</p>
+      <h2>A.2 — Recover Homographies</h2>
+      <p>Given n point correspondences <code>(p, p')</code>, solve <span class="mono">p' = H p</span> for the 3×3 homography <code>H</code> (8 dof, set <code>H[2,2]=1</code> or normalize post‑hoc). Use <em>more than four</em> correspondences and solve via least squares.</p>
       <div class="grid">
-        <figure class="g-6"><img src="a2/corr_vis_1.png" alt="Correspondences vis" /><figcaption>Point correspondences visualization</figcaption></figure>
-        <figure class="g-6"><img src="a2/equation_layout.png" alt="A h = b layout" /><figcaption>Linear system A h = b</figcaption></figure>
+        <figure class="g-6"><img src="set1.png" alt="Correspondences vis" /><figcaption>Point correspondences visualization</figcaption></figure>
+        <figure class="g-6"><img src="a2/equation_layout.png" alt="A h = b layout" /><figcaption>System of Equations (for each correspondence):
+
+Point 1: (x=2527.0, y=1678.0) → (u=1725.0, v=1688.0)
+  2527.0*h1 + 1678.0*h2 + 1*h3 +   0*h4 +   0*h5 +   0*h6 + -4359075.0*h7 + -2894550.0*h8 =   1725.0
+    0*h1 +   0*h2 + 0*h3 + 2527.0*h4 + 1678.0*h5 + 1*h6 + -4265576.0*h7 + -2832464.0*h8 =   1688.0
+
+Point 2: (x=1824.0, y=1451.0) → (u=1062.0, v=1418.0)
+  1824.0*h1 + 1451.0*h2 + 1*h3 +   0*h4 +   0*h5 +   0*h6 + -1937088.0*h7 + -1540962.0*h8 =   1062.0
+    0*h1 +   0*h2 + 0*h3 + 1824.0*h4 + 1451.0*h5 + 1*h6 + -2586432.0*h7 + -2057518.0*h8 =   1418.0
+
+Point 3: (x=2261.0, y=1466.0) → (u=1487.0, v=1472.0)
+  2261.0*h1 + 1466.0*h2 + 1*h3 +   0*h4 +   0*h5 +   0*h6 + -3362107.0*h7 + -2179942.0*h8 =   1487.0
+    0*h1 +   0*h2 + 0*h3 + 2261.0*h4 + 1466.0*h5 + 1*h6 + -3328192.0*h7 + -2157952.0*h8 =   1472.0
+
+Point 4: (x=2218.0, y=1313.0) → (u=1443.0, v=1318.0)
+  2218.0*h1 + 1313.0*h2 + 1*h3 +   0*h4 +   0*h5 +   0*h6 + -3200574.0*h7 + -1894659.0*h8 =   1443.0
+    0*h1 +   0*h2 + 0*h3 + 2218.0*h4 + 1313.0*h5 + 1*h6 + -2923324.0*h7 + -1730534.0*h8 =   1318.0
+
+Point 5: (x=2860.0, y=1241.0) → (u=2009.0, v=1300.0)
+  2860.0*h1 + 1241.0*h2 + 1*h3 +   0*h4 +   0*h5 +   0*h6 + -5745740.0*h7 + -2493169.0*h8 =   2009.0
+    0*h1 +   0*h2 + 0*h3 + 2860.0*h4 + 1241.0*h5 + 1*h6 + -3718000.0*h7 + -1613300.0*h8 =   1300.0
+
+Point 6: (x=2801.0, y=1416.0) → (u=1963.0, v=1459.0)
+  2801.0*h1 + 1416.0*h2 + 1*h3 +   0*h4 +   0*h5 +   0*h6 + -5498363.0*h7 + -2779608.0*h8 =   1963.0
+    0*h1 +   0*h2 + 0*h3 + 2801.0*h4 + 1416.0*h5 + 1*h6 + -4086659.0*h7 + -2065944.0*h8 =   1459.0
+
+Point 7: (x=1744.0, y=1519.0) → (u=984.0, v=1485.0)
+  1744.0*h1 + 1519.0*h2 + 1*h3 +   0*h4 +   0*h5 +   0*h6 + -1716096.0*h7 + -1494696.0*h8 =    984.0
+    0*h1 +   0*h2 + 0*h3 + 1744.0*h4 + 1519.0*h5 + 1*h6 + -2589840.0*h7 + -2255715.0*h8 =   1485.0
+
+Point 8: (x=1615.0, y=1381.0) → (u=845.0, v=1334.0)
+  1615.0*h1 + 1381.0*h2 + 1*h3 +   0*h4 +   0*h5 +   0*h6 + -1364675.0*h7 + -1166945.0*h8 =    845.0
+    0*h1 +   0*h2 + 0*h3 + 1615.0*h4 + 1381.0*h5 + 1*h6 + -2154410.0*h7 + -1842254.0*h8 =   1334.0
+
+Point 9: (x=1128.0, y=1432.0) → (u=309.0, v=1346.0)
+  1128.0*h1 + 1432.0*h2 + 1*h3 +   0*h4 +   0*h5 +   0*h6 + -348552.0*h7 + -442488.0*h8 =    309.0
+    0*h1 +   0*h2 + 0*h3 + 1128.0*h4 + 1432.0*h5 + 1*h6 + -1518288.0*h7 + -1927472.0*h8 =   1346.0
+
+Point 10: (x=1321.0, y=1557.0) → (u=528.0, v=1493.0)
+  1321.0*h1 + 1557.0*h2 + 1*h3 +   0*h4 +   0*h5 +   0*h6 + -697488.0*h7 + -822096.0*h8 =    528.0
+    0*h1 +   0*h2 + 0*h3 + 1321.0*h4 + 1557.0*h5 + 1*h6 + -1972253.0*h7 + -2324601.0*h8 =   1493.0
+
+Recovered Homography Matrix:
+
+1.351950  6.568187e-03 -1184.644858
+0.262277  1.229552e+00  -533.999969
+0.000119 -6.898342e-07     1.000000
+</figcaption></figure>
       </div>
-      <pre><code class="language-python">def computeH(im1_pts: np.ndarray, im2_pts: np.ndarray) -&gt; np.ndarray:
-    """
-    Estimate homography H such that p' ~ H p using n≥4 correspondences.
-    im1_pts, im2_pts: (n,2) arrays of (x,y) in image 1 and image 2.
-    Return H with shape (3,3), scaled so H[2,2]=1 (or ||H||=1).
-    """
-    # 1) Build A and b from each pair (x, y) -&gt; (u, v)
-    # 2) Solve min ||A h - b|| via least squares/SVD
-    # 3) Reshape h -&gt; H and normalize
-    pass
-</code></pre>
-      <p class="muted">You can collect correspondences with a simple matplotlib <code>ginput</code> tool, an online tool like PixSpy, or any editor that shows pixel coordinates.</p>
-      <div class="callout"><strong>Deliverables:</strong> <em>computeH</em> implementation, correspondence visualizations, your linear system, and the recovered H matrices.</div>
     </section>
 
     <!-- ------------------- A.3 ------------------- -->
     <section id="a3">
-      <h2>A.3 — Warp the Images <span class="badge">20 pts</span></h2>
+      <h2>A.3 — Warp the Images</h2>
       <p>Implement <em>inverse warping</em> with two interpolators you write from scratch:</p>
       <ul>
         <li>Nearest Neighbor</li>
@@ -127,7 +161,7 @@ def warpImageBilinear(im: np.ndarray, H: np.ndarray, out_shape=None) -&gt; np.nd
 
     <!-- ------------------- A.4 ------------------- -->
     <section id="a4">
-      <h2>A.4 — Blend Images into a Mosaic <span class="badge">20 pts</span></h2>
+      <h2>A.4 — Blend Images into a Mosaic </h2>
       <p>Register all images to a common canvas (leave one unwarped or create a new reference frame). Blend with feathering (alpha falloff) or a multi‑band method (e.g., Laplacian pyramid) to reduce seams and ghosting.</p>
       <div class="grid">
         <figure class="g-12"><img src="a4/mosaic_sources.png" alt="Sources" /><figcaption>Source stacks aligned on a common canvas</figcaption></figure>
@@ -139,7 +173,7 @@ def warpImageBilinear(im: np.ndarray, H: np.ndarray, out_shape=None) -&gt; np.nd
 
     <!-- ------------------- A.5 ------------------- -->
     <section id="a5">
-      <h2>A.5 — Bells & Whistles <span class="badge">CS280A: required</span></h2>
+      <h2>A.5 — Bells & Whistles </h2>
       <ul>
         <li><strong>Spherical / Cylindrical / Polar</strong> projections with inverse sampling (choose an effective focal length/radius).</li>
         <li class="muted">Optional ideas: rotation‑only model for pure yaw/pitch/roll; 360° cylindrical panorama; video mosaics with synchronization; your own creative extensions.</li>
