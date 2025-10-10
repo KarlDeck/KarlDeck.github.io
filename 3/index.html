@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CS180/280A — Project 3A: Image Warping & Mosaicing</title>
+  <style>
+    :root{
+      --ink:#0f172a;--muted:#475569;--line:#e2e8f0;--bg:#ffffff;--chip:#f1f5f9;--panel:#f8fafc;--accent:#003262;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial;color:var(--ink);background:var(--bg)}
+    header{border-bottom:1px solid var(--line);padding:16px 20px;display:flex;align-items:center;gap:16px}
+    header img{height:36px;width:auto;display:block}
+    header .titles{display:flex;flex-direction:column}
+    header h1{margin:0;font-size:20px;line-height:1.25}
+    header p{margin:2px 0 0;color:var(--muted);font-size:14px}
+    main{max-width:1000px;margin:0 auto;padding:24px 20px 80px}
+    h2,h3{margin:0 0 12px}
+    h2{margin-top:28px;padding-top:8px;border-top:1px solid var(--line)}
+    p{margin:8px 0 14px}
+    .muted{color:var(--muted)}
+    .grid{display:grid;gap:12px;grid-template-columns:repeat(12,1fr)}
+    .g-3{grid-column:span 3} .g-4{grid-column:span 4} .g-6{grid-column:span 6} .g-8{grid-column:span 8} .g-12{grid-column:span 12}
+    @media (max-width: 860px){ .g-3,.g-4,.g-6,.g-8,.g-12{grid-column:span 12} }
+    figure{margin:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel)}
+    figure img{display:block;width:100%;height:auto}
+    figcaption{padding:8px 10px;font-size:13px;color:var(--muted);background:var(--chip)}
+    pre{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:10px;overflow:auto;font-size:13px}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+    .badge{display:inline-block;padding:2px 8px;border-radius:999px;background:var(--chip);color:var(--muted);font-size:12px;margin-left:8px}
+    .callout{border:1px dashed var(--line);background:var(--panel);border-radius:10px;padding:12px 14px;margin:10px 0}
+    .todo{color:#b91c1c;font-weight:600}
+    .toc{padding:10px 12px;border:1px solid var(--line);background:var(--panel);border-radius:10px}
+    .toc a{color:var(--accent);text-decoration:none}
+    .toc ul{margin:6px 0 0 16px;padding:0}
+    .toc li{margin:4px 0}
+    .mono{font-variant-ligatures:none}
+  </style>
+</head>
+<body>
+  <header>
+    <!-- Replace with your local logo asset if desired -->
+    <img src="assets/berkeley-logo.png" alt="UC Berkeley" />
+    <div class="titles">
+      <h1>Programming Project #3 (proj3A) — Image Warping & Mosaicing</h1>
+      <p>CS180/280A: Intro to Computer Vision & Computational Photography <span class="badge">first part of a larger project</span></p>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ------------------- A.1 ------------------- -->
+    <section id="a1">
+      <h2>A.1 — Shoot the Pictures <span class="badge">20 pts</span></h2>
+      <div class="grid">
+        <figure class="g-6"><img src="a1/set1_img1.jpg" alt="Set 1 - Image 1" /><figcaption>Set 1 — Image 1</figcaption></figure>
+        <figure class="g-6"><img src="a1/set1_img2.jpg" alt="Set 1 - Image 2" /><figcaption>Set 1 — Image 2</figcaption></figure>
+        <figure class="g-6"><img src="a1/set2_img1.jpg" alt="Set 2 - Image 1" /><figcaption>Set 2 — Image 1</figcaption></figure>
+        <figure class="g-6"><img src="a1/set2_img2.jpg" alt="Set 2 - Image 2" /><figcaption>Set 2 — Image 2</figcaption></figure>
+      </div>
+      <p class="muted">Tip: Multiple scenes (interiors, canyons, forests, panoramas) often work well.</p>
+      <div class="callout"><strong>Deliverable:</strong> Show at least two sets with projective relationships (fixed COP, camera rotation).</div>
+    </section>
+
+    <!-- ------------------- A.2 ------------------- -->
+    <section id="a2">
+      <h2>A.2 — Recover Homographies <span class="badge">20 pts</span></h2>
+      <p>Given n point correspondences <code>(p, p')</code>, solve <span class="mono">p' = H p</span> for the 3×3 homography <code>H</code> (8 dof, set <code>H[2,2]=1</code> or normalize post‑hoc). Use <em>more than four</em> correspondences and solve via least squares — four points is unstable.</p>
+      <div class="grid">
+        <figure class="g-6"><img src="a2/corr_vis_1.png" alt="Correspondences vis" /><figcaption>Point correspondences visualization</figcaption></figure>
+        <figure class="g-6"><img src="a2/equation_layout.png" alt="A h = b layout" /><figcaption>Linear system A h = b</figcaption></figure>
+      </div>
+      <pre><code class="language-python">def computeH(im1_pts: np.ndarray, im2_pts: np.ndarray) -&gt; np.ndarray:
+    """
+    Estimate homography H such that p' ~ H p using n≥4 correspondences.
+    im1_pts, im2_pts: (n,2) arrays of (x,y) in image 1 and image 2.
+    Return H with shape (3,3), scaled so H[2,2]=1 (or ||H||=1).
+    """
+    # 1) Build A and b from each pair (x, y) -&gt; (u, v)
+    # 2) Solve min ||A h - b|| via least squares/SVD
+    # 3) Reshape h -&gt; H and normalize
+    pass
+</code></pre>
+      <p class="muted">You can collect correspondences with a simple matplotlib <code>ginput</code> tool, an online tool like PixSpy, or any editor that shows pixel coordinates.</p>
+      <div class="callout"><strong>Deliverables:</strong> <em>computeH</em> implementation, correspondence visualizations, your linear system, and the recovered H matrices.</div>
+    </section>
+
+    <!-- ------------------- A.3 ------------------- -->
+    <section id="a3">
+      <h2>A.3 — Warp the Images <span class="badge">20 pts</span></h2>
+      <p>Implement <em>inverse warping</em> with two interpolators you write from scratch:</p>
+      <ul>
+        <li>Nearest Neighbor</li>
+        <li>Bilinear</li>
+      </ul>
+      <pre><code class="language-python">def warpImageNearestNeighbor(im: np.ndarray, H: np.ndarray, out_shape=None) -&gt; np.ndarray:
+    """Inverse warp with nearest-neighbor interpolation."""
+    pass
+
+def warpImageBilinear(im: np.ndarray, H: np.ndarray, out_shape=None) -&gt; np.ndarray:
+    """Inverse warp with bilinear interpolation."""
+    pass
+</code></pre>
+      <div class="callout">
+        <strong>Implementation notes:</strong>
+        <ul>
+          <li>Treat (0,0) as pixel centers if it simplifies interpolation logic.</li>
+          <li>Predict output bounds by mapping source corners through H.</li>
+          <li>Use an alpha mask to handle holes and aid later blending.</li>
+        </ul>
+      </div>
+      <div class="grid">
+        <figure class="g-6"><img src="a3/warp_nn.png" alt="Warp (NN)" /><figcaption>Warp result — Nearest Neighbor</figcaption></figure>
+        <figure class="g-6"><img src="a3/warp_bilinear.png" alt="Warp (Bilinear)" /><figcaption>Warp result — Bilinear</figcaption></figure>
+      </div>
+      <p class="muted">Compare quality vs. speed; bilinear should be smoother, NN faster but blocky.</p>
+
+      <h3 id="rect">Rectification (sanity test)</h3>
+      <p>With a single image, rectify a known rectangle (e.g., poster, painting, floor tile) by mapping its four corners to a true square in a canonical frame.</p>
+      <div class="grid">
+        <figure class="g-6"><img src="a3/rect_input.jpg" alt="Rectification input" /><figcaption>Input with planar rectangle</figcaption></figure>
+        <figure class="g-6"><img src="a3/rect_output.jpg" alt="Rectification output" /><figcaption>Rectified result</figcaption></figure>
+      </div>
+      <div class="callout"><strong>Deliverables:</strong> Implement both warps; show 2+ rectification examples and discuss differences between NN vs. bilinear.</div>
+    </section>
+
+    <!-- ------------------- A.4 ------------------- -->
+    <section id="a4">
+      <h2>A.4 — Blend Images into a Mosaic <span class="badge">20 pts</span></h2>
+      <p>Register all images to a common canvas (leave one unwarped or create a new reference frame). Blend with feathering (alpha falloff) or a multi‑band method (e.g., Laplacian pyramid) to reduce seams and ghosting.</p>
+      <div class="grid">
+        <figure class="g-12"><img src="a4/mosaic_sources.png" alt="Sources" /><figcaption>Source stacks aligned on a common canvas</figcaption></figure>
+        <figure class="g-12"><img src="a4/mosaic_result.png" alt="Mosaic" /><figcaption>Final mosaic (feathered / multi‑band blend)</figcaption></figure>
+      </div>
+      <div class="callout"><strong>Deliverables:</strong> Show <em>three</em> mosaics with their source images. Explain your blending strategy and alpha design.</div>
+      <p class="muted">If your FOV spans &gt;180°, consider spherical/cylindrical mappings (see A.5).</p>
+    </section>
+
+    <!-- ------------------- A.5 ------------------- -->
+    <section id="a5">
+      <h2>A.5 — Bells & Whistles <span class="badge">CS280A: required</span></h2>
+      <ul>
+        <li><strong>Spherical / Cylindrical / Polar</strong> projections with inverse sampling (choose an effective focal length/radius).</li>
+        <li class="muted">Optional ideas: rotation‑only model for pure yaw/pitch/roll; 360° cylindrical panorama; video mosaics with synchronization; your own creative extensions.</li>
+      </ul>
+      <div class="grid">
+        <figure class="g-6"><img src="a5/cylindrical_example.png" alt="Cylindrical" /><figcaption>Cylindrical panorama</figcaption></figure>
+        <figure class="g-6"><img src="a5/spherical_example.png" alt="Spherical" /><figcaption>Spherical mapping</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- ------------------- Reflection ------------------- -->
+    <section id="learning">
+      <h2>Most Important Thing I Learned</h2>
+      <p class="muted">(Write‑up after results) e.g., Stability of homography estimation with over‑determined correspondences; inverse mapping nuances; alpha design for robust blending; pros/cons of planar vs. cylindrical projection.</p>
+    </section>
+  </main>
+</body>
+</html>
