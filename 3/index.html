@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CS180/280A — Project 3A: Image Warping & Mosaicing</title>
+  <title>CS180/280A — Project 3A & 3B: Image Warping, Mosaicing & Autostitching</title>
   <style>
     :root{
       --ink:#0f172a;--muted:#475569;--line:#e2e8f0;--bg:#ffffff;--chip:#f1f5f9;--panel:#f8fafc;--accent:#003262;
@@ -16,7 +16,7 @@
     header .titles{display:flex;flex-direction:column}
     header h1{margin:0;font-size:20px;line-height:1.25}
     header p{margin:2px 0 0;color:var(--muted);font-size:14px}
-    main{max-width:1000px;margin:0 auto;padding:24px 20px 80px}
+    main{max-width:1000px;margin:0 auto;padding:24px 20px 120px}
     h2,h3{margin:0 0 12px}
     h2{margin-top:28px;padding-top:8px;border-top:1px solid var(--line)}
     p{margin:8px 0 14px}
@@ -37,15 +37,19 @@
     .toc ul{margin:6px 0 0 16px;padding:0}
     .toc li{margin:4px 0}
     .mono{font-variant-ligatures:none}
+    .divider{height:1px;background:var(--line);margin:32px 0}
+    .chip{display:inline-block;padding:4px 10px;border-radius:999px;background:var(--chip);font-size:12px;color:var(--muted)}
+    .backtotop{display:inline-block;margin-top:8px;font-size:13px}
+    .backtotop a{color:var(--accent);text-decoration:none}
   </style>
 </head>
 <body>
-  <header>
+  <header id="top">
     <!-- Replace with your local logo asset if desired -->
     <img src="assets/berkeley-logo.png" alt="UC Berkeley" />
     <div class="titles">
-      <h1>Programming Project #3 (proj3A) — Image Warping & Mosaicing</h1>
-      <p>CS180/280A: Intro to Computer Vision & Computational Photography <span class="badge">first part of a larger project</span></p>
+      <h1>Programming Project #3 — Image Warping, Mosaicing & Autostitching</h1>
+      <p>CS180/280A: Intro to Computer Vision & Computational Photography <span class="badge">Part A & Part B</span></p>
     </div>
   </header>
 
@@ -118,7 +122,7 @@ Recovered Homography Matrix:
 0.262277  1.229552e+00  -533.999969
 0.000119 -6.898342e-07     1.000000</figcaption></figure>
       </div>
-    <div class="grid">
+      <div class="grid">
         <figure class="g-6"><img src="set2.png" alt="Correspondences vis" /><figcaption>Point correspondences visualization</figcaption></figure>
         <figure class="g-6"><img src="a2/equation_layout.png" alt="A h = b layout" /><figcaption>System of Equations (for each correspondence):
 
@@ -160,28 +164,27 @@ Recovered Homography Matrix:
 -1.391221 -2.718983 8384.448437
 -0.000778 -0.000270    1.000000</figcaption></figure>
       </div>
-    <div class="grid">
+      <div class="grid">
         <figure class="g-6"><img src="set3.png" alt="Correspondences vis" /><figcaption>Point correspondences visualization</figcaption></figure>
         <figure class="g-6"><img src="a2/equation_layout.png" alt="A h = b layout" /><figcaption>Linear system A h = b</figcaption></figure>
       </div>
-    <div class="grid">
+      <div class="grid">
         <figure class="g-6"><img src="set4.png" alt="Correspondences vis" /><figcaption>Point correspondences visualization</figcaption></figure>
         <figure class="g-6"><img src="a2/equation_layout.png" alt="A h = b layout" /><figcaption>Linear system A h = b</figcaption></figure>
-    </div>
+      </div>
     </section>
 
     <!-- ------------------- A.3 ------------------- -->
     <section id="a3">
       <h2>A.3 — Warp the Images</h2>
-
       <div class="grid">
         <figure class="g-6"><img src="warp1.png" alt="Warp (NN)" /><figcaption>Warp result — Nearest Neighbor</figcaption></figure>
       </div>
-    <div class="grid">
+      <div class="grid">
         <figure class="g-6"><img src="warp2.png" alt="Warp (NN)" /><figcaption>Warp result — Nearest Neighbor</figcaption></figure>
       </div>
       <p class="muted">The bilinear ones look a little better. Linear is a little faster.</p>
-
+    </section>
 
     <!-- ------------------- A.4 ------------------- -->
     <section id="a4">
@@ -209,14 +212,108 @@ Recovered Homography Matrix:
               auto-rotate
               exposure="1.2"
               style="width:100%; height:480px; background-color:#f9fafb;">
-    </model-viewer>
+      </model-viewer>
+      <div class="backtotop"><a href="#top">↑ Back to top</a></div>
     </section>
 
-    <!-- ------------------- Reflection ------------------- -->
+    <div class="divider"></div>
+
+    <!-- ========================================================= -->
+    <!-- =======================   PART B   ======================= -->
+    <!-- ========================================================= -->
+    <section id="b0">
+      <h2>Task B — Automatic Image Mosaicing (Autostitch)</h2>
+      <p class="muted">In Part B, we automate the correspondence & stitching pipeline: detect interest points (Harris), cull via ANMS, build simple descriptors, match with a ratio test, estimate a robust homography with RANSAC, and finally warp & blend for an automatic mosaic.</p>
+      <div class="toc">
+        <strong>Contents (Part B)</strong>
+        <ul>
+          <li><a href="#b1">B.1 — Corner Detection (Harris) + ANMS</a></li>
+          <li><a href="#b2">B.2 — 8×8 Corner Descriptors</a></li>
+          <li><a href="#b3">B.3 — Feature Matching (SSD + Lowe ratio)</a></li>
+          <li><a href="#b4">B.4 — RANSAC Homography</a></li>
+          <li><a href="#b5">B.5 — Autostitch Pipeline</a></li>
+          <li><a href="#b6">B.6 — Results</a></li>
+          <li><a href="#b7">B.7 — Reflection</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="b1">
+      <h3>B.1 — Harris Corner Detection + ANMS</h3>
+      <p>Single‑scale Harris (no sub‑pixel), then <em>Adaptive Non‑Maximal Suppression</em>. If you skip ANMS initially, you can drop in a random subset figure and replace later.</p>
+      <div class="grid">
+        <figure class="g-6"><img src="b1/input.png" alt="Input image" /><figcaption>Input image</figcaption></figure>
+        <figure class="g-6"><img src="b1/harriscorners.png" alt="Harris corners overlaid" /><figcaption>Harris corners overlaid (no ANMS)</figcaption></figure>
+      </div>
+      <div class="grid">
+        <figure class="g-6"><img src="b1/harriscornersANMS.png" alt="Corners after ANMS" /><figcaption>Chosen corners overlaid (with ANMS)</figcaption></figure>
+        <figure class="g-6"><img src="b1/multiscale.png" alt="Corners after ANMS" /><figcaption>Chosen corners overlaid (with ANMS)</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="b2">
+      <h3>B.2 — Feature Descriptor Extraction (8×8 from 40×40)</h3>
+      <p>Axis‑aligned 8×8 descriptors sampled from a blurred 40×40 window; bias/gain (zero‑mean, unit‑variance) normalization. Ignore wavelets and rotation‑invariance.</p>
+      <div class="grid">
+        <figure class="g-6"><img src="b2/corners.png" alt="Example 40x40 patches" /><figcaption>Corners</figcaption></figure>
+        <figure class="g-6"><img src="b2/descriptors8x8.png" alt="8x8 descriptor grid" /><figcaption>Normalized 8×8 descriptors (several examples)</figcaption></figure>
+        <figure class="g-6"><img src="b2/rotationinv.png" alt="8x8 descriptor grid rotation invariant" /><figcaption>Normalized 8×8 descriptors rotation invariant</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="b3">
+      <h3>B.3 — Feature Matching (SSD + Lowe Ratio)</h3>
+      <p>Two‑NN ratio test (threshold per Fig. 6b); show lines between matched points for each pair.</p>
+      <div class="grid">
+        <figure class="g-12"><img src="b3/matched.png" alt="Matches for set 1" /><figcaption>Matched features — Set 1</figcaption></figure>
+        <figure class="g-12"><img src="b3/match2.png" alt="Matches for set 2" /><figcaption>Matched features — Set 2</figcaption></figure>
+        <figure class="g-12"><img src="b3/match3.png" alt="Matches for set 3" /><figcaption>Matched features — Set 3</figcaption></figure>
+      </div>
+      <div class="callout"><strong>Deliverables:</strong> Upload one figure per pair (e.g., <code>b3/matches_set#.png</code>).</div>
+    </section>
+
+    <section id="b4">
+      <h3>B.4 — RANSAC for Robust Homography</h3>
+    <section id="b6">
+      <h3>B.6 — Results</h3>
+      <p>Automatic mosaics for the same triplets from Part A. Note reduced ghosting where parallax is small and scenes are near‑planar.</p>
+      <div class="grid">
+        <figure class="g-12"><img src="b6/join1.png" alt="Auto mosaic 1" /><figcaption>Autostitch result — Set 1</figcaption></figure>
+        <figure class="g-12"><img src="b6/join2.png" alt="Auto mosaic 2" /><figcaption>Autostitch result — Set 2</figcaption></figure>
+        <figure class="g-12"><img src="b6/join3.png" alt="Auto mosaic 3" /><figcaption>Autostitch result — Set 3</figcaption></figure>
+        <figure class="g-12"><img src="b6/join3.png" alt="Auto mosaic 4" /><figcaption>Autostitch result — Set 3</figcaption></figure>
+      </div>
+      <div class="callout"><strong>Deliverables:</strong> Show matched features, inlier visualization, recovered <code>H</code>, and final stitched mosaics for at least two image pairs/sets.</div>
+    </section>
+
+    <section id="b7">
+      <h3>B.7 — Reflection</h3>
+      <p class="muted">Key takeaways: ANMS dramatically improves coverage; simple 8×8 descriptors suffice with ratio test + RANSAC; failure cases arise from strong parallax, low texture, or repeated patterns; multi‑band blending reduces residual seams.</p>
+      <div class="backtotop"><a href="#top">↑ Back to top</a></div>
+    </section>
+
+    <!-- ------------------- Reflection (A) ------------------- -->
     <section id="learning">
       <h2>Most Important Thing I Learned</h2>
       <p class="muted">Stability of homography estimation with over‑determined correspondences; inverse mapping nuances; alpha design for robust blending; pros/cons of planar vs. cylindrical projection.</p>
     </section>
+
+      <section id="submit">
+      <h2>Deliverables & Submission (Part B)</h2>
+      <p>Ensure the following are present on this page (Parts A+B):</p>
+      <ul>
+        <li><strong>B.1:</strong> <code>b1/harris_overlay.png</code>, <code>b1/anms_overlay.png</code> (plus optional <code>b1/random_overlay.png</code>)</li>
+        <li><strong>B.2:</strong> <code>b2/patches40.png</code>, <code>b2/descriptors8x8.png</code></li>
+        <li><strong>B.3:</strong> <code>b3/matches_set1.png</code>, <code>b3/matches_set2.png</code>, <code>b3/matches_set3.png</code></li>
+        <li><strong>B.4:</strong> <code>b4/inliers_set#.png</code> and <code>b4/compare#_manual.png</code> vs <code>b4/compare#_auto.png</code> for ≥3 sets</li>
+        <li><strong>B.5:</strong> Figures per chosen option + <code>b5/showcase.png</code></li>
+      </ul>
+      <div class="callout">
+        <p><strong>Turn in:</strong> your code + this webpage. Submit your public URL to the class gallery via the course form. Your submission for Part B should include the contents of Part A and B.</p>
+      </div>
+      <div class="backtotop"><a href="#top">↑ Back to top</a></div>
+    </section>
+
   </main>
 </body>
 </html>
