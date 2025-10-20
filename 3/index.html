@@ -224,23 +224,10 @@ Recovered Homography Matrix:
     <section id="b0">
       <h2>Task B — Automatic Image Mosaicing (Autostitch)</h2>
       <p class="muted">In Part B, we automate the correspondence & stitching pipeline: detect interest points (Harris), cull via ANMS, build simple descriptors, match with a ratio test, estimate a robust homography with RANSAC, and finally warp & blend for an automatic mosaic.</p>
-      <div class="toc">
-        <strong>Contents (Part B)</strong>
-        <ul>
-          <li><a href="#b1">B.1 — Corner Detection (Harris) + ANMS</a></li>
-          <li><a href="#b2">B.2 — 8×8 Corner Descriptors</a></li>
-          <li><a href="#b3">B.3 — Feature Matching (SSD + Lowe ratio)</a></li>
-          <li><a href="#b4">B.4 — RANSAC Homography</a></li>
-          <li><a href="#b5">B.5 — Autostitch Pipeline</a></li>
-          <li><a href="#b6">B.6 — Results</a></li>
-          <li><a href="#b7">B.7 — Reflection</a></li>
-        </ul>
-      </div>
     </section>
 
     <section id="b1">
       <h3>B.1 — Harris Corner Detection + ANMS</h3>
-      <p>Single‑scale Harris (no sub‑pixel), then <em>Adaptive Non‑Maximal Suppression</em>. If you skip ANMS initially, you can drop in a random subset figure and replace later.</p>
       <div class="grid">
         <figure class="g-6"><img src="b1/input.png" alt="Input image" /><figcaption>Input image</figcaption></figure>
         <figure class="g-6"><img src="b1/harriscorners.png" alt="Harris corners overlaid" /><figcaption>Harris corners overlaid (no ANMS)</figcaption></figure>
@@ -253,7 +240,6 @@ Recovered Homography Matrix:
 
     <section id="b2">
       <h3>B.2 — Feature Descriptor Extraction (8×8 from 40×40)</h3>
-      <p>Axis‑aligned 8×8 descriptors sampled from a blurred 40×40 window; bias/gain (zero‑mean, unit‑variance) normalization. Ignore wavelets and rotation‑invariance.</p>
       <div class="grid">
         <figure class="g-6"><img src="b2/corners.png" alt="Example 40x40 patches" /><figcaption>Corners</figcaption></figure>
         <figure class="g-6"><img src="b2/descriptors8x8.png" alt="8x8 descriptor grid" /><figcaption>Normalized 8×8 descriptors (several examples)</figcaption></figure>
@@ -263,7 +249,6 @@ Recovered Homography Matrix:
 
     <section id="b3">
       <h3>B.3 — Feature Matching (SSD + Lowe Ratio)</h3>
-      <p>Two‑NN ratio test (threshold per Fig. 6b); show lines between matched points for each pair.</p>
       <div class="grid">
         <figure class="g-12"><img src="b3/matched.png" alt="Matches for set 1" /><figcaption>Matched features — Set 1</figcaption></figure>
         <figure class="g-12"><img src="b3/match2.png" alt="Matches for set 2" /><figcaption>Matched features — Set 2</figcaption></figure>
@@ -276,7 +261,7 @@ Recovered Homography Matrix:
       <h3>B.4 — RANSAC for Robust Homography</h3>
     <section id="b6">
       <h3>B.6 — Results</h3>
-      <p>Automatic mosaics for the same triplets from Part A. Note reduced ghosting where parallax is small and scenes are near‑planar.</p>
+      <p>Automatic mosaics for the same triplets from Part A see part A for comparison to handstitched</p>
       <div class="grid">
         <figure class="g-12"><img src="b6/join1.png" alt="Auto mosaic 1" /><figcaption>Autostitch result — Set 1</figcaption></figure>
         <figure class="g-12"><img src="b6/join2.png" alt="Auto mosaic 2" /><figcaption>Autostitch result — Set 2</figcaption></figure>
