@@ -98,16 +98,6 @@
     <figcaption>Rays and sample points rendered in 3D.</figcaption>
 </figure>
 
-<figure>
-    <img src="rays_dense.png" alt="Dense rays from single image" />
-    <figcaption>Dense ray visualization showing many rays emitted from a single training image.</figcaption>
-</figure>
-
-<figure>
-    <img src="ray_sample_vis.png" alt="Ray visualization with samples" />
-    <figcaption>Rays and sample points rendered in 3D.</figcaption>
-</figure>
-
 <h3>Part 2.4–2.5: NeRF MLP & Volume Rendering</h3>
 <ul>
     <li>10-frequency positional encoding for positions</li>
@@ -119,13 +109,8 @@
 
 <h3>Training Progress on Lego</h3>
 <figure>
-    <img src="lego_iter_200.png" alt="Lego 200 iterations" />
+    <img src="lego_iter.png" alt="Lego 200 iterations" />
     <figcaption>Lego render at 200 iterations.</figcaption>
-</figure>
-
-<figure>
-    <img src="lego_iter_400.png" alt="Lego 400 iterations" />
-    <figcaption>Lego render at 400 iterations.</figcaption>
 </figure>
 
 <h3>Validation PSNR</h3>
@@ -134,19 +119,20 @@
     <figcaption>Validation PSNR improving past 23 dB.</figcaption>
 </figure>
 
+<h3>Lego Novel View Orbit Rendering</h3>
+<figure>
+    <img src="lego_orbit.gif" alt="Lego orbit gif" />
+    <figcaption>360° orbit view rendered using the Lego NeRF and provided test camera path.</figcaption>
+</figure>
+
 <hr>
 
 <h2>Part 2.6 — NeRF Trained on My Own Object</h2>
 
 <h3>Training Progress</h3>
 <figure>
-    <img src="my_object_iter_100.png" alt="Object 100 iterations" />
+    <img src="my_object_iter.png" alt="Object 100 iterations" />
     <figcaption>Prediction at 100 iterations.</figcaption>
-</figure>
-
-<figure>
-    <img src="my_object_iter_500.png" alt="Object 500 iterations" />
-    <figcaption>Prediction at 500 iterations.</figcaption>
 </figure>
 
 <h3>Training Loss Curve</h3>
@@ -155,10 +141,22 @@
     <figcaption>Loss curve across training iterations.</figcaption>
 </figure>
 
-<h3>Novel View Orbit Rendering</h3>
+<h3>Novel View Orbit Rendering (My Object)</h3>
 <figure>
     <img src="my_object_orbit.gif" alt="Object orbit gif" />
     <figcaption>360° orbit view generated using my trained NeRF model.</figcaption>
+</figure>
+
+<h3>Novel View Orbit Rendering (My Object)</h3>
+<figure>
+    <img src="my_object_orbit.gif" alt="Object orbit gif" />
+    <figcaption>360° orbit view generated using my trained NeRF model.</figcaption>
+</figure>
+
+<h3>Lego Novel View Orbit Rendering</h3>
+<figure>
+    <img src="lego_orbit.gif" alt="Lego orbit gif" />
+    <figcaption>360° orbit view rendered using the Lego NeRF and provided test camera path.</figcaption>
 </figure>
 
 <p>This completes the pipeline from calibration → pose estimation → dataset construction → Lego NeRF → my own custom NeRF.</p>
