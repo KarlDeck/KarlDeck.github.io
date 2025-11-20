@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CS180 Project 4 — Neural Radiance Fields (NeRF)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #fafafa;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        figure {
+            margin: 20px 0;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            border-radius: 6px;
+        }
+        figcaption {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        hr {
+            margin: 40px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<h1>CS180 / CS280A — Project 4: Neural Radiance Fields (NeRF)</h1>
+<p><strong>Author:</strong> Karl Deck<br>
+<strong>Date:</strong> November 14, 2025</p>
+
+<h2>Part 0 — Camera Calibration, Pose Estimation, and Dataset Creation</h2>
+
+<h3>Part 0.1: Camera Calibration</h3>
+<p>I collected 71 calibration images of a 4×4 ArUco tag at varying angles and distances. Using OpenCV’s <code>cv2.calibrateCamera</code>, I detected tag corners, accumulated object–image correspondences, and solved for intrinsics and distortion coefficients.</p>
+
+<h3>Part 0.2–0.3: Object Capture & Pose Estimation</h3>
+<p>I captured 71 photos of my object next to an ArUco tag while keeping zoom constant. Using <code>cv2.solvePnP</code>, I recovered rotation and translation for every frame, then inverted them to obtain camera-to-world matrices.</p>
+
+<h3>Camera Frustum Visualization</h3>
+<figure>
+    <img src="rays_vis.png" alt="Camera frustums visualization" />
+    <figcaption>Camera poses estimated from ArUco detections.</figcaption>
+</figure>
+<figure>
+    <img src="samples_vis.png" alt="Camera frustums visualization 2" />
+    <figcaption>Second view showing camera coverage.</figcaption>
+</figure>
+
+<h3>Part 0.4: Undistortion and NeRF Dataset Packaging</h3>
+<p>At this stage, I only computed undistorted versions for visualization and saved the intrinsics and poses into two temporary <code>.npy</code> files for the screenshots. Full undistortion, cropping, and final dataset packaging into <code>my_data.npz</code> was performed later during dataset creation</code>.</p>
+
+<hr>
+
+<h2>Part 1 — Neural Field for a 2D Image</h2>
+<p>I implemented a 2D neural field consisting of:</p>
+<ul>
+    <li>Sinusoidal positional encoding (L = 10)</li>
+    <li>6-layer MLP, width 128</li>
+    <li>Adam optimizer (1e-2)</li>
+    <li>Random pixel sampling (10k/pixel batch)</li>
+    <li>MSE loss, PSNR metric</li>
+</ul>
+<p>The model successfully reconstructed both the provided test image and one of my own.</p>
+
+<hr>
+
+<h2>Part 2 — NeRF on the Lego Dataset</h2>
+
+<h3>Part 2.1–2.3: Rays, Sampling & Visualization</h3>
+<p>I implemented pixel-to-camera inversion, ray origin/direction generation, and 3D sampling along rays with perturbation. Below is a visualization of sampled rays and points.</p>
+
+<figure>
+    <img src="ray_sample_vis.png" alt="Ray visualization with samples" />
+    <figcaption>Rays and sample points rendered in 3D.</figcaption>
+</figure>
+
+<h3>Part 2.4–2.5: NeRF MLP & Volume Rendering</h3>
+<ul>
+    <li>10-frequency positional encoding for positions</li>
+    <li>4-frequency encoding for view directions</li>
+    <li>8-layer MLP with skip-connection at layer 4</li>
+    <li>Density (ReLU) + Color (Sigmoid)</li>
+    <li>Differentiable volumetric rendering implementation</li>
+</ul>
+
+<h3>Training Progress on Lego</h3>
+<figure>
+    <img src="lego_iter_200.png" alt="Lego 200 iterations" />
+    <figcaption>Lego render at 200 iterations.</figcaption>
+</figure>
+
+<figure>
+    <img src="lego_iter_400.png" alt="Lego 400 iterations" />
+    <figcaption>Lego render at 400 iterations.</figcaption>
+</figure>
+
+<h3>Validation PSNR</h3>
+<figure>
+    <img src="psnr_curve.png" alt="PSNR curve" />
+    <figcaption>Validation PSNR improving past 23 dB.</figcaption>
+</figure>
+
+<hr>
+
+<h2>Part 2.6 — NeRF Trained on My Own Object</h2>
+
+<h3>Training Progress</h3>
+<figure>
+    <img src="my_object_iter_100.png" alt="Object 100 iterations" />
+    <figcaption>Prediction at 100 iterations.</figcaption>
+</figure>
+
+<figure>
+    <img src="my_object_iter_500.png" alt="Object 500 iterations" />
+    <figcaption>Prediction at 500 iterations.</figcaption>
+</figure>
+
+<h3>Training Loss Curve</h3>
+<figure>
+    <img src="my_object_loss.png" alt="Training loss curve" />
+    <figcaption>Loss curve across training iterations.</figcaption>
+</figure>
+
+<h3>Novel View Orbit Rendering</h3>
+<figure>
+    <img src="my_object_orbit.gif" alt="Object orbit gif" />
+    <figcaption>360° orbit view generated using my trained NeRF model.</figcaption>
+</figure>
+
+<p>This completes the pipeline from calibration → pose estimation → dataset construction → Lego NeRF → my own custom NeRF.</p>
+
+</div>
+</body>
+</html>
