@@ -65,6 +65,10 @@
     <img src="samples_vis.png" alt="Camera frustums visualization 2" />
     <figcaption>Second view showing camera coverage.</figcaption>
 </figure>
+<figure>
+    <img src="camera_view_3.png" alt="Camera frustums visualization 3" />
+    <figcaption>Third view showing additional coverage.</figcaption>
+</figure>
 
 <h3>Part 0.4: Undistortion and NeRF Dataset Packaging</h3>
 <p>At this stage, I only computed undistorted versions for visualization and saved the intrinsics and poses into two temporary <code>.npy</code> files for the screenshots. Full undistortion, cropping, and final dataset packaging into <code>my_data.npz</code> was performed later during dataset creation</code>.</p>
@@ -88,6 +92,16 @@
 
 <h3>Part 2.1–2.3: Rays, Sampling & Visualization</h3>
 <p>I implemented pixel-to-camera inversion, ray origin/direction generation, and 3D sampling along rays with perturbation. Below is a visualization of sampled rays and points.</p>
+
+<figure>
+    <img src="ray_sample_vis.png" alt="Ray visualization with samples" />
+    <figcaption>Rays and sample points rendered in 3D.</figcaption>
+</figure>
+
+<figure>
+    <img src="rays_dense.png" alt="Dense rays from single image" />
+    <figcaption>Dense ray visualization showing many rays emitted from a single training image.</figcaption>
+</figure>
 
 <figure>
     <img src="ray_sample_vis.png" alt="Ray visualization with samples" />
