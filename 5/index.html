@@ -57,7 +57,16 @@
     .small{font-size: 13px; color: var(--muted);}
     .badge{display:inline-block; font-size:12px; padding: 2px 10px; border:1px solid var(--rule); border-radius: 999px; color: var(--muted);}
     .kpi{display:flex; gap:10px; flex-wrap: wrap; margin: 10px 0 0;}
-  </style>
+  
+    .missing{
+      border: 1px dashed var(--rule);
+      border-radius: 12px;
+      padding: 18px 14px;
+      color: var(--muted);
+      text-align: center;
+      background: #fff;
+    }
+    </style>
 </head>
 <body>
   <div class="container">
@@ -99,16 +108,7 @@
       I generated prompt embeddings (provided by the course tooling) and sampled from DeepFloyd IF Stage I (64×64).
       I used the same random seed throughout the rest of the assignment as required. citeturn1view0
     </p>
-
-    <div class="callout">
-      <strong>Deliverables (Part 0)</strong>
-      <ul>
-        <li>Come up with prompts + generate embeddings</li>
-        <li>Choose 3 prompts, show captions + outputs, and compare at ≥2 different <code>num_inference_steps</code></li>
-        <li>Report the random seed used for all subsequent parts</li>
-      </ul>
-      <div class="small">From the official Part A spec. citeturn1view0</div>
-    </div>
+</div>
 
     <h3>0.1 Prompt gallery (3 prompts × 2 step counts)</h3>
     <p class="small">
@@ -116,29 +116,29 @@
     </p>
     <div class="grid">
       <figure>
-        <img src="TODO_part0_prompt1_stepsA.png" alt="Prompt 1 — steps A" />
-        <figcaption><span class="badge">Prompt 1</span> steps = <!-- TODO --></figcaption>
-      </figure>
+  <div class="missing">Missing image: <code>TODO_part0_prompt1_stepsA.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption><span class="badge">Prompt 1</span> steps = <!-- TODO --> <span class="badge">MISSING</span></figcaption>
+</figure>
       <figure>
-        <img src="TODO_part0_prompt1_stepsB.png" alt="Prompt 1 — steps B" />
-        <figcaption><span class="badge">Prompt 1</span> steps = <!-- TODO --></figcaption>
-      </figure>
+  <div class="missing">Missing image: <code>TODO_part0_prompt1_stepsB.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption><span class="badge">Prompt 1</span> steps = <!-- TODO --> <span class="badge">MISSING</span></figcaption>
+</figure>
       <figure>
-        <img src="TODO_part0_prompt2_stepsA.png" alt="Prompt 2 — steps A" />
-        <figcaption><span class="badge">Prompt 2</span> steps = <!-- TODO --></figcaption>
-      </figure>
+  <div class="missing">Missing image: <code>TODO_part0_prompt2_stepsA.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption><span class="badge">Prompt 2</span> steps = <!-- TODO --> <span class="badge">MISSING</span></figcaption>
+</figure>
       <figure>
-        <img src="TODO_part0_prompt2_stepsB.png" alt="Prompt 2 — steps B" />
-        <figcaption><span class="badge">Prompt 2</span> steps = <!-- TODO --></figcaption>
-      </figure>
+  <div class="missing">Missing image: <code>TODO_part0_prompt2_stepsB.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption><span class="badge">Prompt 2</span> steps = <!-- TODO --> <span class="badge">MISSING</span></figcaption>
+</figure>
       <figure>
-        <img src="TODO_part0_prompt3_stepsA.png" alt="Prompt 3 — steps A" />
-        <figcaption><span class="badge">Prompt 3</span> steps = <!-- TODO --></figcaption>
-      </figure>
+  <div class="missing">Missing image: <code>TODO_part0_prompt3_stepsA.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption><span class="badge">Prompt 3</span> steps = <!-- TODO --> <span class="badge">MISSING</span></figcaption>
+</figure>
       <figure>
-        <img src="TODO_part0_prompt3_stepsB.png" alt="Prompt 3 — steps B" />
-        <figcaption><span class="badge">Prompt 3</span> steps = <!-- TODO --></figcaption>
-      </figure>
+  <div class="missing">Missing image: <code>TODO_part0_prompt3_stepsB.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption><span class="badge">Prompt 3</span> steps = <!-- TODO --> <span class="badge">MISSING</span></figcaption>
+</figure>
     </div>
 
     <hr>
@@ -146,265 +146,305 @@
     <h2 id="part1">Part 1 — Sampling loops</h2>
 
     <h3 id="p11">1.1 Implementing the forward process</h3>
-    <div class="callout">
-      <strong>Deliverables (1.1)</strong>
-      <ul>
-        <li>Implement <code>im_noisy = forward(im, t)</code></li>
-        <li>Show Campanile at noise levels <code>t = [250, 500, 750]</code></li>
-      </ul>
-      <div class="small">From the official Part A spec. citeturn1view0</div>
-    </div>
+</div>
 
     <div class="grid3">
-      <figure><img src="TODO_forward_t250.png" alt="Campanile noisy t=250"><figcaption>Noisy Campanile (t=250)</figcaption></figure>
-      <figure><img src="TODO_forward_t500.png" alt="Campanile noisy t=500"><figcaption>Noisy Campanile (t=500)</figcaption></figure>
-      <figure><img src="TODO_forward_t750.png" alt="Campanile noisy t=750"><figcaption>Noisy Campanile (t=750)</figcaption></figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_forward_t250.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Noisy Campanile (t=250) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_forward_t500.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Noisy Campanile (t=500) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_forward_t750.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Noisy Campanile (t=750) <span class="badge">MISSING</span></figcaption>
+</figure>
     </div>
 
     <h3 id="p12">1.2 Classical denoising (Gaussian blur)</h3>
-    <div class="callout">
-      <strong>Deliverables (1.2)</strong>
-      <ul>
-        <li>For each noisy Campanile from 1.1 (<code>t = [250, 500, 750]</code>), show your best Gaussian-blur denoised result side-by-side.</li>
-      </ul>
-      <div class="small">From the official Part A spec. citeturn1view0</div>
-    </div>
+</div>
 
     <div class="grid">
-      <figure><img src="TODO_gaussian_t250.png" alt="Gaussian blur t=250"><figcaption>Gaussian blur denoising (t=250)</figcaption></figure>
-      <figure><img src="TODO_gaussian_t500.png" alt="Gaussian blur t=500"><figcaption>Gaussian blur denoising (t=500)</figcaption></figure>
-      <figure><img src="TODO_gaussian_t750.png" alt="Gaussian blur t=750"><figcaption>Gaussian blur denoising (t=750)</figcaption></figure>
-      <figure><img src="TODO_gaussian_side_by_side.png" alt="All gaussian side-by-side"><figcaption>(Optional) Combined visualization</figcaption></figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_gaussian_t250.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Gaussian blur denoising (t=250) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_gaussian_t500.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Gaussian blur denoising (t=500) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_gaussian_t750.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Gaussian blur denoising (t=750) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_gaussian_side_by_side.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>(Optional) Combined visualization <span class="badge">MISSING</span></figcaption>
+</figure>
     </div>
 
     <h3 id="p13">1.3 One-step denoising</h3>
-    <div class="callout">
-      <strong>Deliverables (1.3)</strong>
-      <ul>
-        <li>For <code>t = [250, 500, 750]</code>: (1) forward-noise, (2) UNet noise estimate, (3) compute <code>x0</code>, and (4) visualize original / noisy / one-step denoised</li>
-      </ul>
-      <div class="small">From the official Part A spec. citeturn1view0</div>
-    </div>
+</div>
     <div class="grid3">
-      <figure><img src="TODO_onestep_triplet_t250.png" alt="one-step t=250"><figcaption>Original / noisy / one-step denoised (t=250)</figcaption></figure>
-      <figure><img src="TODO_onestep_triplet_t500.png" alt="one-step t=500"><figcaption>Original / noisy / one-step denoised (t=500)</figcaption></figure>
-      <figure><img src="TODO_onestep_triplet_t750.png" alt="one-step t=750"><figcaption>Original / noisy / one-step denoised (t=750)</figcaption></figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_onestep_triplet_t250.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Original / noisy / one-step denoised (t=250) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_onestep_triplet_t500.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Original / noisy / one-step denoised (t=500) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_onestep_triplet_t750.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Original / noisy / one-step denoised (t=750) <span class="badge">MISSING</span></figcaption>
+</figure>
     </div>
 
     <h3 id="p14">1.4 Iterative denoising (strided DDPM)</h3>
-    <div class="callout">
-      <strong>Deliverables (1.4)</strong>
-      <ul>
-        <li>Create <code>strided_timesteps</code>: start at 990, stride 30, end at 0; call <code>stage_1.scheduler.set_timesteps(...)</code></li>
-        <li>Implement <code>iterative_denoise(im_noisy, i_start)</code></li>
-        <li>Using <code>i_start=10</code>: show every 5th denoising loop image + the final result</li>
-        <li>Compare final iterative result vs. one-step denoise vs. gaussian blur</li>
-      </ul>
-      <div class="small">From the official Part A spec. citeturn5view0</div>
-    </div>
+</div>
 
     <p class="small">
       Tip: you can include a “denoising progression” as a strip image (e.g., concatenated outputs every 5 steps).
     </p>
     <figure>
-      <img src="TODO_iterative_progress_every5.png" alt="Iterative denoise progression" />
-      <figcaption>Iterative denoising progression (every 5th step; start index i_start=10)</figcaption>
-    </figure>
+  <div class="missing">Missing image: <code>TODO_iterative_progress_every5.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Iterative denoising progression (every 5th step; start index i_start=10) <span class="badge">MISSING</span></figcaption>
+</figure>
 
     <div class="grid3">
-      <figure><img src="TODO_iterative_final.png" alt="Iterative final"><figcaption>Final iterative denoise (best)</figcaption></figure>
-      <figure><img src="TODO_iterative_onestep_compare.png" alt="One-step compare"><figcaption>One-step denoise (worse)</figcaption></figure>
-      <figure><img src="TODO_iterative_gaussian_compare.png" alt="Gaussian compare"><figcaption>Gaussian blur (baseline)</figcaption></figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_iterative_final.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Final iterative denoise (best) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_iterative_onestep_compare.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>One-step denoise (worse) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_iterative_gaussian_compare.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Gaussian blur (baseline) <span class="badge">MISSING</span></figcaption>
+</figure>
     </div>
 
     <h3 id="p15">1.5 Diffusion model sampling (from pure noise)</h3>
-    <div class="callout">
-      <strong>Deliverables (1.5)</strong>
-      <ul><li>Show 5 sampled images (start from Gaussian noise, <code>i_start=0</code>) with prompt “a high quality photo”.</li></ul>
-      <div class="small">From the official Part A spec. citeturn4view2</div>
-    </div>
+</div>
     <div class="grid4">
-      <figure><img src="TODO_sampling1.png" alt="sample 1"><figcaption>Sample 1</figcaption></figure>
-      <figure><img src="TODO_sampling2.png" alt="sample 2"><figcaption>Sample 2</figcaption></figure>
-      <figure><img src="TODO_sampling3.png" alt="sample 3"><figcaption>Sample 3</figcaption></figure>
-      <figure><img src="TODO_sampling4.png" alt="sample 4"><figcaption>Sample 4</figcaption></figure>
-      <figure><img src="TODO_sampling5.png" alt="sample 5"><figcaption>Sample 5</figcaption></figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_sampling1.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Sample 1 <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_sampling2.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Sample 2 <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_sampling3.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Sample 3 <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_sampling4.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Sample 4 <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_sampling5.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Sample 5 <span class="badge">MISSING</span></figcaption>
+</figure>
     </div>
 
     <h3 id="p16">1.6 Classifier-Free Guidance (CFG)</h3>
-    <div class="callout">
-      <strong>Deliverables (1.6)</strong>
-      <ul>
-        <li>Implement <code>iterative_denoise_cfg</code></li>
-        <li>Show 5 images of “a high quality photo” with CFG scale <code>&gamma; = 7</code></li>
-      </ul>
-      <div class="small">From the official Part A spec. citeturn2view0</div>
-    </div>
+</div>
     <div class="grid4">
-      <figure><img src="TODO_cfg1.png" alt="cfg 1"><figcaption>CFG sample 1</figcaption></figure>
-      <figure><img src="TODO_cfg2.png" alt="cfg 2"><figcaption>CFG sample 2</figcaption></figure>
-      <figure><img src="TODO_cfg3.png" alt="cfg 3"><figcaption>CFG sample 3</figcaption></figure>
-      <figure><img src="TODO_cfg4.png" alt="cfg 4"><figcaption>CFG sample 4</figcaption></figure>
-      <figure><img src="TODO_cfg5.png" alt="cfg 5"><figcaption>CFG sample 5</figcaption></figure>
+      <figure><img src="diffusion#1.png" alt="cfg 1"><figcaption>CFG sample 1</figcaption></figure>
+      <figure><img src="diffusion#2.png" alt="cfg 2"><figcaption>CFG sample 2</figcaption></figure>
+      <figure><img src="diffusion#3.png" alt="cfg 3"><figcaption>CFG sample 3</figcaption></figure>
+      <figure><img src="diffusion#4.png" alt="cfg 4"><figcaption>CFG sample 4</figcaption></figure>
+      <figure><img src="diffusion#5.png" alt="cfg 5"><figcaption>CFG sample 5</figcaption></figure>
     </div>
 
     <h3 id="p17">1.7 Image-to-image translation</h3>
 
     <h4>1.7.0 SDEdit on Campanile + 2 personal images</h4>
-    <div class="callout">
-      <strong>Deliverables (1.7)</strong>
-      <ul>
-        <li>Campanile edits at noise levels (start indices) <code>[1, 3, 5, 7, 10, 20]</code> using prompt “a high quality photo”</li>
-        <li>Edits of 2 of your own test images using the same procedure</li>
-      </ul>
-      <div class="small">From the official Part A spec. citeturn2view0</div>
-    </div>
+</div>
 
     <p class="small">Each figure below can be a side-by-side “original vs edited” image per i_start.</p>
 
     <h4>Campanile edits</h4>
     <div class="grid">
-      <figure><img src="TODO_campanile_edit_i1.png" alt="campanile i=1"><figcaption>Campanile edit (i_start=1)</figcaption></figure>
-      <figure><img src="TODO_campanile_edit_i3.png" alt="campanile i=3"><figcaption>Campanile edit (i_start=3)</figcaption></figure>
-      <figure><img src="TODO_campanile_edit_i5.png" alt="campanile i=5"><figcaption>Campanile edit (i_start=5)</figcaption></figure>
-      <figure><img src="TODO_campanile_edit_i7.png" alt="campanile i=7"><figcaption>Campanile edit (i_start=7)</figcaption></figure>
-      <figure><img src="TODO_campanile_edit_i10.png" alt="campanile i=10"><figcaption>Campanile edit (i_start=10)</figcaption></figure>
-      <figure><img src="TODO_campanile_edit_i20.png" alt="campanile i=20"><figcaption>Campanile edit (i_start=20)</figcaption></figure>
+      <figure><img src="7#1.png" alt="campanile i=1"><figcaption>Campanile edit (i_start=1)</figcaption></figure>
+      <figure><img src="7#2.png" alt="campanile i=3"><figcaption>Campanile edit (i_start=3)</figcaption></figure>
+      <figure><img src="7#3.png" alt="campanile i=5"><figcaption>Campanile edit (i_start=5)</figcaption></figure>
+      <figure><img src="7#4.png" alt="campanile i=7"><figcaption>Campanile edit (i_start=7)</figcaption></figure>
+      <figure><img src="7#5.png" alt="campanile i=10"><figcaption>Campanile edit (i_start=10)</figcaption></figure>
+      <figure><img src="7#6.png" alt="campanile i=20"><figcaption>Campanile edit (i_start=20)</figcaption></figure>
     </div>
 
     <h4>My image #1 edits</h4>
     <div class="grid">
-      <figure><img src="TODO_myimg1_i1.png" alt="my image1 i1"><figcaption>My image #1 (i_start=1)</figcaption></figure>
-      <figure><img src="TODO_myimg1_i3.png" alt="my image1 i3"><figcaption>My image #1 (i_start=3)</figcaption></figure>
-      <figure><img src="TODO_myimg1_i5.png" alt="my image1 i5"><figcaption>My image #1 (i_start=5)</figcaption></figure>
-      <figure><img src="TODO_myimg1_i7.png" alt="my image1 i7"><figcaption>My image #1 (i_start=7)</figcaption></figure>
-      <figure><img src="TODO_myimg1_i10.png" alt="my image1 i10"><figcaption>My image #1 (i_start=10)</figcaption></figure>
-      <figure><img src="TODO_myimg1_i20.png" alt="my image1 i20"><figcaption>My image #1 (i_start=20)</figcaption></figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_myimg1_i1.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>My image #1 (i_start=1) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_myimg1_i3.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>My image #1 (i_start=3) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_myimg1_i5.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>My image #1 (i_start=5) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image slot filled by <code>bernadine-dog-60/40.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>My image #1 (i_start=7) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image slot filled by <code>bernadine-dog-40/20.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>My image #1 (i_start=10) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image slot filled by <code>bernadine-dog-20/20.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>My image #1 (i_start=20) <span class="badge">MISSING</span></figcaption>
+</figure>
     </div>
 
     <h4>My image #2 edits</h4>
     <div class="grid">
-      <figure><img src="TODO_myimg2_i1.png" alt="my image2 i1"><figcaption>My image #2 (i_start=1)</figcaption></figure>
-      <figure><img src="TODO_myimg2_i3.png" alt="my image2 i3"><figcaption>My image #2 (i_start=3)</figcaption></figure>
-      <figure><img src="TODO_myimg2_i5.png" alt="my image2 i5"><figcaption>My image #2 (i_start=5)</figcaption></figure>
-      <figure><img src="TODO_myimg2_i7.png" alt="my image2 i7"><figcaption>My image #2 (i_start=7)</figcaption></figure>
-      <figure><img src="TODO_myimg2_i10.png" alt="my image2 i10"><figcaption>My image #2 (i_start=10)</figcaption></figure>
-      <figure><img src="TODO_myimg2_i20.png" alt="my image2 i20"><figcaption>My image #2 (i_start=20)</figcaption></figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_myimg2_i1.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>My image #2 (i_start=1) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_myimg2_i3.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>My image #2 (i_start=3) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_myimg2_i5.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>My image #2 (i_start=5) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image slot filled by <code>man-w-beer-60/40.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>My image #2 (i_start=7) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image slot filled by <code>man-w-beer-40/20.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>My image #2 (i_start=10) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image slot filled by <code>man-w-beer-20/20.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>My image #2 (i_start=20) <span class="badge">MISSING</span></figcaption>
+</figure>
     </div>
 
     <h4>1.7.1 Web image + hand-drawn images</h4>
-    <div class="callout">
-      <strong>Deliverables (1.7.1)</strong>
-      <ul>
-        <li>1 web image edited at noise levels <code>[1, 3, 5, 7, 10, 20]</code></li>
-        <li>2 hand-drawn images edited at noise levels <code>[1, 3, 5, 7, 10, 20]</code></li>
-      </ul>
-      <div class="small">From the official Part A spec. citeturn2view0</div>
-    </div>
+</div>
     <p class="small">Add your results here (same layout as above).</p>
 
     <h4>1.7.2 Inpainting (RePaint-style forcing)</h4>
-    <div class="callout">
-      <strong>Deliverables (1.7.2)</strong>
-      <ul>
-        <li>Implement <code>inpaint</code> function using the forcing rule <code>x_t ← m x_t + (1−m) forward(x_orig,t)</code></li>
-        <li>Campanile inpainted (top of tower)</li>
-        <li>2 of your own images inpainted</li>
-      </ul>
-      <div class="small">From the official Part A spec. citeturn2view0</div>
-    </div>
+</div>
     <div class="grid3">
-      <figure><img src="TODO_inpaint_original.png" alt="inpaint orig"><figcaption>Original image</figcaption></figure>
-      <figure><img src="TODO_inpaint_mask.png" alt="inpaint mask"><figcaption>Mask (white = region to inpaint)</figcaption></figure>
-      <figure><img src="TODO_inpaint_result.png" alt="inpaint result"><figcaption>Inpainted result</figcaption></figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_inpaint_original.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Original image <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_inpaint_mask.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Mask (white = region to inpaint) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_inpaint_result.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Inpainted result <span class="badge">MISSING</span></figcaption>
+</figure>
     </div>
 
     <h4>1.7.3 Text-conditional image-to-image translation</h4>
-    <div class="callout">
-      <strong>Deliverables (1.7.3)</strong>
-      <ul>
-        <li>Campanile edits at noise levels <code>[1, 3, 5, 7, 10, 20]</code> using your chosen prompt</li>
-        <li>Edits of 2 of your own test images using the same procedure</li>
-      </ul>
-      <div class="small">From the official Part A spec. citeturn3view0</div>
-    </div>
+</div>
     <p class="small">Add a grid of your text-guided edits here.</p>
 
     <h3 id="p18">1.8 Visual anagrams (flip illusion)</h3>
-    <div class="callout">
-      <strong>Deliverables (1.8)</strong>
-      <ul>
-        <li>Implement <code>visual_anagrams</code> (flip-based noise averaging)</li>
-        <li>Show 2 illusions that change when flipped upside down</li>
-      </ul>
-      <div class="small">From the official Part A spec. citeturn3view0</div>
-    </div>
+</div>
 
     <div class="grid">
       <figure>
-        <img src="TODO_anagram1_upright.png" alt="anagram 1 upright">
-        <figcaption>Illusion #1 (upright)</figcaption>
-      </figure>
+  <div class="missing">Missing image: <code>TODO_anagram1_upright.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Illusion #1 (upright) <span class="badge">MISSING</span></figcaption>
+</figure>
       <figure>
-        <img src="TODO_anagram1_flipped.png" alt="anagram 1 flipped">
-        <figcaption>Illusion #1 (flipped 180°)</figcaption>
-      </figure>
+  <div class="missing">Missing image: <code>TODO_anagram1_flipped.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Illusion #1 (flipped 180°) <span class="badge">MISSING</span></figcaption>
+</figure>
       <figure>
-        <img src="TODO_anagram2_upright.png" alt="anagram 2 upright">
-        <figcaption>Illusion #2 (upright)</figcaption>
-      </figure>
+  <div class="missing">Missing image: <code>TODO_anagram2_upright.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Illusion #2 (upright) <span class="badge">MISSING</span></figcaption>
+</figure>
       <figure>
-        <img src="TODO_anagram2_flipped.png" alt="anagram 2 flipped">
-        <figcaption>Illusion #2 (flipped 180°)</figcaption>
-      </figure>
+  <div class="missing">Missing image: <code>TODO_anagram2_flipped.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Illusion #2 (flipped 180°) <span class="badge">MISSING</span></figcaption>
+</figure>
     </div>
 
     <h3 id="p19">1.9 Hybrid images (factorized diffusion)</h3>
-    <div class="callout">
-      <strong>Deliverables (1.9)</strong>
-      <ul>
-        <li>Implement <code>make_hybrids</code> (lowpass(ε₁) + highpass(ε₂))</li>
-        <li>Show 2 hybrid images of your choice</li>
-      </ul>
-      <div class="small">From the official Part A spec. citeturn3view2</div>
-    </div>
+</div>
 
     <div class="grid">
-      <figure><img src="TODO_hybrid1.png" alt="hybrid 1"><figcaption>Hybrid #1 (near vs far effect)</figcaption></figure>
-      <figure><img src="TODO_hybrid1_far.png" alt="hybrid 1 far"><figcaption>Hybrid #1 (optional far-view crop/resize)</figcaption></figure>
-      <figure><img src="TODO_hybrid2.png" alt="hybrid 2"><figcaption>Hybrid #2 (near vs far effect)</figcaption></figure>
-      <figure><img src="TODO_hybrid2_far.png" alt="hybrid 2 far"><figcaption>Hybrid #2 (optional far-view crop/resize)</figcaption></figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_hybrid1.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Hybrid #1 (near vs far effect) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_hybrid1_far.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Hybrid #1 (optional far-view crop/resize) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_hybrid2.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Hybrid #2 (near vs far effect) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_hybrid2_far.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Hybrid #2 (optional far-view crop/resize) <span class="badge">MISSING</span></figcaption>
+</figure>
     </div>
 
     <hr>
 
     <h2 id="part2">Part 2 — Bells & Whistles (required for CS280A)</h2>
-    <div class="callout">
-      <strong>Required (CS280A)</strong>
-      <ul>
-        <li>Implement <em>two more</em> visual-anagram transformations beyond upside-down flipping</li>
-        <li>Design a course logo (e.g., text-conditioned image-to-image translation on UCB logo / your drawing)</li>
-      </ul>
-      <div class="small">From the official Part A spec. citeturn3view3</div>
-    </div>
+</div>
 
     <h3>2.1 Additional anagram transformation #1 — Mirror</h3>
     <p class="small">Show the generated image plus its mirrored view (and describe prompts used).</p>
     <div class="grid">
-      <figure><img src="TODO_mirror_upright.png" alt="mirror anagram upright"><figcaption>Mirror anagram (original view)</figcaption></figure>
-      <figure><img src="TODO_mirror_mirrored.png" alt="mirror anagram mirrored"><figcaption>Mirror anagram (horizontally flipped)</figcaption></figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_mirror_upright.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Mirror anagram (original view) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_mirror_mirrored.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Mirror anagram (horizontally flipped) <span class="badge">MISSING</span></figcaption>
+</figure>
     </div>
 
     <h3>2.2 Additional anagram transformation #2 — <!-- TODO: pick one (rotate 90°, skew, etc.) --></h3>
     <div class="grid">
-      <figure><img src="TODO_extra_anagram_view1.png" alt="extra anagram view 1"><figcaption>Extra anagram (view 1)</figcaption></figure>
-      <figure><img src="TODO_extra_anagram_view2.png" alt="extra anagram view 2"><figcaption>Extra anagram (transformed view)</figcaption></figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_extra_anagram_view1.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Extra anagram (view 1) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_extra_anagram_view2.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Extra anagram (transformed view) <span class="badge">MISSING</span></figcaption>
+</figure>
     </div>
 
     <h3>2.3 Course logo design</h3>
     <div class="grid">
-      <figure><img src="TODO_logo_input.png" alt="logo input"><figcaption>Input (UCB logo or sketch)</figcaption></figure>
-      <figure><img src="TODO_logo_output.png" alt="logo output"><figcaption>Edited / generated logo output</figcaption></figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_logo_input.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Input (UCB logo or sketch) <span class="badge">MISSING</span></figcaption>
+</figure>
+      <figure>
+  <div class="missing">Missing image: <code>TODO_logo_output.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
+  <figcaption>Edited / generated logo output <span class="badge">MISSING</span></figcaption>
+</figure>
     </div>
 
     <hr>
