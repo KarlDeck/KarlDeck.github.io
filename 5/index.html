@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CS180 / CS280A — Project 5A: Fun with Diffusion Models (Part A)</title>
+  <style>
+    :root{
+      --bg:#fafafa; --card:#ffffff; --ink:#1f2937; --muted:#6b7280; --rule:#e5e7eb;
+      --shadow:0 8px 24px rgba(0,0,0,.08);
+      --radius:14px;
+    }
+    body{
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      margin: 0; background: var(--bg); color: var(--ink); line-height: 1.6;
+    }
+    .container{
+      max-width: 980px; margin: 28px auto; background: var(--card);
+      padding: 40px 44px; border-radius: var(--radius); box-shadow: var(--shadow);
+    }
+    h1{font-size: 30px; margin: 0 0 6px;}
+    h2{font-size: 22px; margin: 34px 0 10px; padding-top: 8px;}
+    h3{font-size: 18px; margin: 22px 0 8px;}
+    p, li{font-size: 15px;}
+    .meta{color: var(--muted); margin: 0 0 18px;}
+    .toc{border:1px solid var(--rule); border-radius: 12px; padding: 14px 16px; background:#fcfcfd;}
+    .toc a{color: inherit; text-decoration: none;}
+    .toc a:hover{text-decoration: underline;}
+    hr{border:none; border-top:1px solid var(--rule); margin: 34px 0;}
+    code, pre{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre{
+      background:#0b1020; color:#e5e7eb; padding: 14px 16px; border-radius: 12px; overflow:auto;
+      font-size: 13px; line-height: 1.45;
+    }
+    .callout{
+      border-left: 4px solid #3b82f6; background:#f7fbff; padding: 12px 14px; border-radius: 10px;
+      color: #111827; margin: 14px 0;
+    }
+    figure{margin: 14px 0 18px; text-align: center;}
+    figure img{max-width: 100%; border-radius: 12px; border: 1px solid var(--rule);}
+    figcaption{color: var(--muted); font-size: 13px; margin-top: 6px;}
+    .grid{
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;
+    }
+    .grid3{
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
+    }
+    .grid4{
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px;
+    }
+    @media (max-width: 860px){
+      .container{padding: 26px 18px;}
+      .grid, .grid3, .grid4{grid-template-columns: 1fr;}
+    }
+    .small{font-size: 13px; color: var(--muted);}
+    .badge{display:inline-block; font-size:12px; padding: 2px 10px; border:1px solid var(--rule); border-radius: 999px; color: var(--muted);}
+    .kpi{display:flex; gap:10px; flex-wrap: wrap; margin: 10px 0 0;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>CS180 / CS280A — Project 5A: Fun with Diffusion Models (Part A)</h1>
+    <p class="meta">
+      <strong>Author:</strong> Karl Deck &nbsp;·&nbsp;
+      <strong>Date:</strong> <!-- TODO --> Dec XX, 2025 &nbsp;·&nbsp;
+      <strong>Seed:</strong> <!-- TODO --> 0
+    </p>
+
+    <div class="toc">
+      <strong>Table of contents</strong>
+      <ul>
+        <li><a href="#part0">Part 0 — Text-to-image warmup</a></li>
+        <li><a href="#part1">Part 1 — Sampling loops</a>
+          <ul>
+            <li><a href="#p11">1.1 Forward process</a></li>
+            <li><a href="#p12">1.2 Classical denoising (Gaussian blur)</a></li>
+            <li><a href="#p13">1.3 One-step denoising</a></li>
+            <li><a href="#p14">1.4 Iterative denoising (strided DDPM)</a></li>
+            <li><a href="#p15">1.5 Sampling from pure noise</a></li>
+            <li><a href="#p16">1.6 Classifier-Free Guidance (CFG)</a></li>
+            <li><a href="#p17">1.7 Image-to-image translation (SDEdit + inpainting)</a></li>
+            <li><a href="#p18">1.8 Visual anagrams (flip illusion)</a></li>
+            <li><a href="#p19">1.9 Hybrid images (factorized diffusion)</a></li>
+          </ul>
+        </li>
+        <li><a href="#part2">Part 2 — Bells & Whistles (CS280A)</a></li>
+      </ul>
+      <p class="small">
+        Note: this webpage is intended to be exported to PDF for Gradescope, per Part A instructions. citeturn1view0
+      </p>
+    </div>
+
+    <hr>
+
+    <h2 id="part0">Part 0 — Text-to-image warmup</h2>
+    <p>
+      I generated prompt embeddings (provided by the course tooling) and sampled from DeepFloyd IF Stage I (64×64).
+      I used the same random seed throughout the rest of the assignment as required. citeturn1view0
+    </p>
+
+    <div class="callout">
+      <strong>Deliverables (Part 0)</strong>
+      <ul>
+        <li>Come up with prompts + generate embeddings</li>
+        <li>Choose 3 prompts, show captions + outputs, and compare at ≥2 different <code>num_inference_steps</code></li>
+        <li>Report the random seed used for all subsequent parts</li>
+      </ul>
+      <div class="small">From the official Part A spec. citeturn1view0</div>
+    </div>
+
+    <h3>0.1 Prompt gallery (3 prompts × 2 step counts)</h3>
+    <p class="small">
+      Replace the <code>src</code> paths with your saved images (e.g., <code>part0/prompt1_steps20.png</code>).
+    </p>
+    <div class="grid">
+      <figure>
+        <img src="TODO_part0_prompt1_stepsA.png" alt="Prompt 1 — steps A" />
+        <figcaption><span class="badge">Prompt 1</span> steps = <!-- TODO --></figcaption>
+      </figure>
+      <figure>
+        <img src="TODO_part0_prompt1_stepsB.png" alt="Prompt 1 — steps B" />
+        <figcaption><span class="badge">Prompt 1</span> steps = <!-- TODO --></figcaption>
+      </figure>
+      <figure>
+        <img src="TODO_part0_prompt2_stepsA.png" alt="Prompt 2 — steps A" />
+        <figcaption><span class="badge">Prompt 2</span> steps = <!-- TODO --></figcaption>
+      </figure>
+      <figure>
+        <img src="TODO_part0_prompt2_stepsB.png" alt="Prompt 2 — steps B" />
+        <figcaption><span class="badge">Prompt 2</span> steps = <!-- TODO --></figcaption>
+      </figure>
+      <figure>
+        <img src="TODO_part0_prompt3_stepsA.png" alt="Prompt 3 — steps A" />
+        <figcaption><span class="badge">Prompt 3</span> steps = <!-- TODO --></figcaption>
+      </figure>
+      <figure>
+        <img src="TODO_part0_prompt3_stepsB.png" alt="Prompt 3 — steps B" />
+        <figcaption><span class="badge">Prompt 3</span> steps = <!-- TODO --></figcaption>
+      </figure>
+    </div>
+
+    <hr>
+
+    <h2 id="part1">Part 1 — Sampling loops</h2>
+
+    <h3 id="p11">1.1 Implementing the forward process</h3>
+    <div class="callout">
+      <strong>Deliverables (1.1)</strong>
+      <ul>
+        <li>Implement <code>im_noisy = forward(im, t)</code></li>
+        <li>Show Campanile at noise levels <code>t = [250, 500, 750]</code></li>
+      </ul>
+      <div class="small">From the official Part A spec. citeturn1view0</div>
+    </div>
+
+    <div class="grid3">
+      <figure><img src="TODO_forward_t250.png" alt="Campanile noisy t=250"><figcaption>Noisy Campanile (t=250)</figcaption></figure>
+      <figure><img src="TODO_forward_t500.png" alt="Campanile noisy t=500"><figcaption>Noisy Campanile (t=500)</figcaption></figure>
+      <figure><img src="TODO_forward_t750.png" alt="Campanile noisy t=750"><figcaption>Noisy Campanile (t=750)</figcaption></figure>
+    </div>
+
+    <h3 id="p12">1.2 Classical denoising (Gaussian blur)</h3>
+    <div class="callout">
+      <strong>Deliverables (1.2)</strong>
+      <ul>
+        <li>For each noisy Campanile from 1.1 (<code>t = [250, 500, 750]</code>), show your best Gaussian-blur denoised result side-by-side.</li>
+      </ul>
+      <div class="small">From the official Part A spec. citeturn1view0</div>
+    </div>
+
+    <div class="grid">
+      <figure><img src="TODO_gaussian_t250.png" alt="Gaussian blur t=250"><figcaption>Gaussian blur denoising (t=250)</figcaption></figure>
+      <figure><img src="TODO_gaussian_t500.png" alt="Gaussian blur t=500"><figcaption>Gaussian blur denoising (t=500)</figcaption></figure>
+      <figure><img src="TODO_gaussian_t750.png" alt="Gaussian blur t=750"><figcaption>Gaussian blur denoising (t=750)</figcaption></figure>
+      <figure><img src="TODO_gaussian_side_by_side.png" alt="All gaussian side-by-side"><figcaption>(Optional) Combined visualization</figcaption></figure>
+    </div>
+
+    <h3 id="p13">1.3 One-step denoising</h3>
+    <div class="callout">
+      <strong>Deliverables (1.3)</strong>
+      <ul>
+        <li>For <code>t = [250, 500, 750]</code>: (1) forward-noise, (2) UNet noise estimate, (3) compute <code>x0</code>, and (4) visualize original / noisy / one-step denoised</li>
+      </ul>
+      <div class="small">From the official Part A spec. citeturn1view0</div>
+    </div>
+    <div class="grid3">
+      <figure><img src="TODO_onestep_triplet_t250.png" alt="one-step t=250"><figcaption>Original / noisy / one-step denoised (t=250)</figcaption></figure>
+      <figure><img src="TODO_onestep_triplet_t500.png" alt="one-step t=500"><figcaption>Original / noisy / one-step denoised (t=500)</figcaption></figure>
+      <figure><img src="TODO_onestep_triplet_t750.png" alt="one-step t=750"><figcaption>Original / noisy / one-step denoised (t=750)</figcaption></figure>
+    </div>
+
+    <h3 id="p14">1.4 Iterative denoising (strided DDPM)</h3>
+    <div class="callout">
+      <strong>Deliverables (1.4)</strong>
+      <ul>
+        <li>Create <code>strided_timesteps</code>: start at 990, stride 30, end at 0; call <code>stage_1.scheduler.set_timesteps(...)</code></li>
+        <li>Implement <code>iterative_denoise(im_noisy, i_start)</code></li>
+        <li>Using <code>i_start=10</code>: show every 5th denoising loop image + the final result</li>
+        <li>Compare final iterative result vs. one-step denoise vs. gaussian blur</li>
+      </ul>
+      <div class="small">From the official Part A spec. citeturn5view0</div>
+    </div>
+
+    <p class="small">
+      Tip: you can include a “denoising progression” as a strip image (e.g., concatenated outputs every 5 steps).
+    </p>
+    <figure>
+      <img src="TODO_iterative_progress_every5.png" alt="Iterative denoise progression" />
+      <figcaption>Iterative denoising progression (every 5th step; start index i_start=10)</figcaption>
+    </figure>
+
+    <div class="grid3">
+      <figure><img src="TODO_iterative_final.png" alt="Iterative final"><figcaption>Final iterative denoise (best)</figcaption></figure>
+      <figure><img src="TODO_iterative_onestep_compare.png" alt="One-step compare"><figcaption>One-step denoise (worse)</figcaption></figure>
+      <figure><img src="TODO_iterative_gaussian_compare.png" alt="Gaussian compare"><figcaption>Gaussian blur (baseline)</figcaption></figure>
+    </div>
+
+    <h3 id="p15">1.5 Diffusion model sampling (from pure noise)</h3>
+    <div class="callout">
+      <strong>Deliverables (1.5)</strong>
+      <ul><li>Show 5 sampled images (start from Gaussian noise, <code>i_start=0</code>) with prompt “a high quality photo”.</li></ul>
+      <div class="small">From the official Part A spec. citeturn4view2</div>
+    </div>
+    <div class="grid4">
+      <figure><img src="TODO_sampling1.png" alt="sample 1"><figcaption>Sample 1</figcaption></figure>
+      <figure><img src="TODO_sampling2.png" alt="sample 2"><figcaption>Sample 2</figcaption></figure>
+      <figure><img src="TODO_sampling3.png" alt="sample 3"><figcaption>Sample 3</figcaption></figure>
+      <figure><img src="TODO_sampling4.png" alt="sample 4"><figcaption>Sample 4</figcaption></figure>
+      <figure><img src="TODO_sampling5.png" alt="sample 5"><figcaption>Sample 5</figcaption></figure>
+    </div>
+
+    <h3 id="p16">1.6 Classifier-Free Guidance (CFG)</h3>
+    <div class="callout">
+      <strong>Deliverables (1.6)</strong>
+      <ul>
+        <li>Implement <code>iterative_denoise_cfg</code></li>
+        <li>Show 5 images of “a high quality photo” with CFG scale <code>&gamma; = 7</code></li>
+      </ul>
+      <div class="small">From the official Part A spec. citeturn2view0</div>
+    </div>
+    <div class="grid4">
+      <figure><img src="TODO_cfg1.png" alt="cfg 1"><figcaption>CFG sample 1</figcaption></figure>
+      <figure><img src="TODO_cfg2.png" alt="cfg 2"><figcaption>CFG sample 2</figcaption></figure>
+      <figure><img src="TODO_cfg3.png" alt="cfg 3"><figcaption>CFG sample 3</figcaption></figure>
+      <figure><img src="TODO_cfg4.png" alt="cfg 4"><figcaption>CFG sample 4</figcaption></figure>
+      <figure><img src="TODO_cfg5.png" alt="cfg 5"><figcaption>CFG sample 5</figcaption></figure>
+    </div>
+
+    <h3 id="p17">1.7 Image-to-image translation</h3>
+
+    <h4>1.7.0 SDEdit on Campanile + 2 personal images</h4>
+    <div class="callout">
+      <strong>Deliverables (1.7)</strong>
+      <ul>
+        <li>Campanile edits at noise levels (start indices) <code>[1, 3, 5, 7, 10, 20]</code> using prompt “a high quality photo”</li>
+        <li>Edits of 2 of your own test images using the same procedure</li>
+      </ul>
+      <div class="small">From the official Part A spec. citeturn2view0</div>
+    </div>
+
+    <p class="small">Each figure below can be a side-by-side “original vs edited” image per i_start.</p>
+
+    <h4>Campanile edits</h4>
+    <div class="grid">
+      <figure><img src="TODO_campanile_edit_i1.png" alt="campanile i=1"><figcaption>Campanile edit (i_start=1)</figcaption></figure>
+      <figure><img src="TODO_campanile_edit_i3.png" alt="campanile i=3"><figcaption>Campanile edit (i_start=3)</figcaption></figure>
+      <figure><img src="TODO_campanile_edit_i5.png" alt="campanile i=5"><figcaption>Campanile edit (i_start=5)</figcaption></figure>
+      <figure><img src="TODO_campanile_edit_i7.png" alt="campanile i=7"><figcaption>Campanile edit (i_start=7)</figcaption></figure>
+      <figure><img src="TODO_campanile_edit_i10.png" alt="campanile i=10"><figcaption>Campanile edit (i_start=10)</figcaption></figure>
+      <figure><img src="TODO_campanile_edit_i20.png" alt="campanile i=20"><figcaption>Campanile edit (i_start=20)</figcaption></figure>
+    </div>
+
+    <h4>My image #1 edits</h4>
+    <div class="grid">
+      <figure><img src="TODO_myimg1_i1.png" alt="my image1 i1"><figcaption>My image #1 (i_start=1)</figcaption></figure>
+      <figure><img src="TODO_myimg1_i3.png" alt="my image1 i3"><figcaption>My image #1 (i_start=3)</figcaption></figure>
+      <figure><img src="TODO_myimg1_i5.png" alt="my image1 i5"><figcaption>My image #1 (i_start=5)</figcaption></figure>
+      <figure><img src="TODO_myimg1_i7.png" alt="my image1 i7"><figcaption>My image #1 (i_start=7)</figcaption></figure>
+      <figure><img src="TODO_myimg1_i10.png" alt="my image1 i10"><figcaption>My image #1 (i_start=10)</figcaption></figure>
+      <figure><img src="TODO_myimg1_i20.png" alt="my image1 i20"><figcaption>My image #1 (i_start=20)</figcaption></figure>
+    </div>
+
+    <h4>My image #2 edits</h4>
+    <div class="grid">
+      <figure><img src="TODO_myimg2_i1.png" alt="my image2 i1"><figcaption>My image #2 (i_start=1)</figcaption></figure>
+      <figure><img src="TODO_myimg2_i3.png" alt="my image2 i3"><figcaption>My image #2 (i_start=3)</figcaption></figure>
+      <figure><img src="TODO_myimg2_i5.png" alt="my image2 i5"><figcaption>My image #2 (i_start=5)</figcaption></figure>
+      <figure><img src="TODO_myimg2_i7.png" alt="my image2 i7"><figcaption>My image #2 (i_start=7)</figcaption></figure>
+      <figure><img src="TODO_myimg2_i10.png" alt="my image2 i10"><figcaption>My image #2 (i_start=10)</figcaption></figure>
+      <figure><img src="TODO_myimg2_i20.png" alt="my image2 i20"><figcaption>My image #2 (i_start=20)</figcaption></figure>
+    </div>
+
+    <h4>1.7.1 Web image + hand-drawn images</h4>
+    <div class="callout">
+      <strong>Deliverables (1.7.1)</strong>
+      <ul>
+        <li>1 web image edited at noise levels <code>[1, 3, 5, 7, 10, 20]</code></li>
+        <li>2 hand-drawn images edited at noise levels <code>[1, 3, 5, 7, 10, 20]</code></li>
+      </ul>
+      <div class="small">From the official Part A spec. citeturn2view0</div>
+    </div>
+    <p class="small">Add your results here (same layout as above).</p>
+
+    <h4>1.7.2 Inpainting (RePaint-style forcing)</h4>
+    <div class="callout">
+      <strong>Deliverables (1.7.2)</strong>
+      <ul>
+        <li>Implement <code>inpaint</code> function using the forcing rule <code>x_t ← m x_t + (1−m) forward(x_orig,t)</code></li>
+        <li>Campanile inpainted (top of tower)</li>
+        <li>2 of your own images inpainted</li>
+      </ul>
+      <div class="small">From the official Part A spec. citeturn2view0</div>
+    </div>
+    <div class="grid3">
+      <figure><img src="TODO_inpaint_original.png" alt="inpaint orig"><figcaption>Original image</figcaption></figure>
+      <figure><img src="TODO_inpaint_mask.png" alt="inpaint mask"><figcaption>Mask (white = region to inpaint)</figcaption></figure>
+      <figure><img src="TODO_inpaint_result.png" alt="inpaint result"><figcaption>Inpainted result</figcaption></figure>
+    </div>
+
+    <h4>1.7.3 Text-conditional image-to-image translation</h4>
+    <div class="callout">
+      <strong>Deliverables (1.7.3)</strong>
+      <ul>
+        <li>Campanile edits at noise levels <code>[1, 3, 5, 7, 10, 20]</code> using your chosen prompt</li>
+        <li>Edits of 2 of your own test images using the same procedure</li>
+      </ul>
+      <div class="small">From the official Part A spec. citeturn3view0</div>
+    </div>
+    <p class="small">Add a grid of your text-guided edits here.</p>
+
+    <h3 id="p18">1.8 Visual anagrams (flip illusion)</h3>
+    <div class="callout">
+      <strong>Deliverables (1.8)</strong>
+      <ul>
+        <li>Implement <code>visual_anagrams</code> (flip-based noise averaging)</li>
+        <li>Show 2 illusions that change when flipped upside down</li>
+      </ul>
+      <div class="small">From the official Part A spec. citeturn3view0</div>
+    </div>
+
+    <div class="grid">
+      <figure>
+        <img src="TODO_anagram1_upright.png" alt="anagram 1 upright">
+        <figcaption>Illusion #1 (upright)</figcaption>
+      </figure>
+      <figure>
+        <img src="TODO_anagram1_flipped.png" alt="anagram 1 flipped">
+        <figcaption>Illusion #1 (flipped 180°)</figcaption>
+      </figure>
+      <figure>
+        <img src="TODO_anagram2_upright.png" alt="anagram 2 upright">
+        <figcaption>Illusion #2 (upright)</figcaption>
+      </figure>
+      <figure>
+        <img src="TODO_anagram2_flipped.png" alt="anagram 2 flipped">
+        <figcaption>Illusion #2 (flipped 180°)</figcaption>
+      </figure>
+    </div>
+
+    <h3 id="p19">1.9 Hybrid images (factorized diffusion)</h3>
+    <div class="callout">
+      <strong>Deliverables (1.9)</strong>
+      <ul>
+        <li>Implement <code>make_hybrids</code> (lowpass(ε₁) + highpass(ε₂))</li>
+        <li>Show 2 hybrid images of your choice</li>
+      </ul>
+      <div class="small">From the official Part A spec. citeturn3view2</div>
+    </div>
+
+    <div class="grid">
+      <figure><img src="TODO_hybrid1.png" alt="hybrid 1"><figcaption>Hybrid #1 (near vs far effect)</figcaption></figure>
+      <figure><img src="TODO_hybrid1_far.png" alt="hybrid 1 far"><figcaption>Hybrid #1 (optional far-view crop/resize)</figcaption></figure>
+      <figure><img src="TODO_hybrid2.png" alt="hybrid 2"><figcaption>Hybrid #2 (near vs far effect)</figcaption></figure>
+      <figure><img src="TODO_hybrid2_far.png" alt="hybrid 2 far"><figcaption>Hybrid #2 (optional far-view crop/resize)</figcaption></figure>
+    </div>
+
+    <hr>
+
+    <h2 id="part2">Part 2 — Bells & Whistles (required for CS280A)</h2>
+    <div class="callout">
+      <strong>Required (CS280A)</strong>
+      <ul>
+        <li>Implement <em>two more</em> visual-anagram transformations beyond upside-down flipping</li>
+        <li>Design a course logo (e.g., text-conditioned image-to-image translation on UCB logo / your drawing)</li>
+      </ul>
+      <div class="small">From the official Part A spec. citeturn3view3</div>
+    </div>
+
+    <h3>2.1 Additional anagram transformation #1 — Mirror</h3>
+    <p class="small">Show the generated image plus its mirrored view (and describe prompts used).</p>
+    <div class="grid">
+      <figure><img src="TODO_mirror_upright.png" alt="mirror anagram upright"><figcaption>Mirror anagram (original view)</figcaption></figure>
+      <figure><img src="TODO_mirror_mirrored.png" alt="mirror anagram mirrored"><figcaption>Mirror anagram (horizontally flipped)</figcaption></figure>
+    </div>
+
+    <h3>2.2 Additional anagram transformation #2 — <!-- TODO: pick one (rotate 90°, skew, etc.) --></h3>
+    <div class="grid">
+      <figure><img src="TODO_extra_anagram_view1.png" alt="extra anagram view 1"><figcaption>Extra anagram (view 1)</figcaption></figure>
+      <figure><img src="TODO_extra_anagram_view2.png" alt="extra anagram view 2"><figcaption>Extra anagram (transformed view)</figcaption></figure>
+    </div>
+
+    <h3>2.3 Course logo design</h3>
+    <div class="grid">
+      <figure><img src="TODO_logo_input.png" alt="logo input"><figcaption>Input (UCB logo or sketch)</figcaption></figure>
+      <figure><img src="TODO_logo_output.png" alt="logo output"><figcaption>Edited / generated logo output</figcaption></figure>
+    </div>
+
+    <hr>
+
+    <p class="small">
+      Reference: I used the same general HTML structure/style as my previous CS180 project webpage and adapted it to the Project 5A deliverables. fileciteturn1file0L1-L20
+    </p>
+  </div>
+</body>
+</html>
