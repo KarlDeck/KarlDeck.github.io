@@ -1,457 +1,391 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CS180 / CS280A — Project 5A: Fun with Diffusion Models (Part A)</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CS180/CS280A Project 5A — Diffusion Models Results</title>
   <style>
     :root{
-      --bg:#fafafa; --card:#ffffff; --ink:#1f2937; --muted:#6b7280; --rule:#e5e7eb;
-      --shadow:0 8px 24px rgba(0,0,0,.08);
-      --radius:14px;
+      --bg:#0b0f17;
+      --card:#111827;
+      --ink:#e5e7eb;
+      --muted:#9ca3af;
+      --rule:#1f2937;
+      --accent:#60a5fa;
+      --shadow:0 12px 30px rgba(0,0,0,.35);
+      --radius:16px;
     }
+    *{box-sizing:border-box}
     body{
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      margin: 0; background: var(--bg); color: var(--ink); line-height: 1.6;
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: radial-gradient(1200px 600px at 30% -10%, rgba(96,165,250,.18), transparent 60%),
+                  radial-gradient(900px 500px at 90% 0%, rgba(167,139,250,.14), transparent 55%),
+                  var(--bg);
+      color:var(--ink);
+      line-height:1.55;
+    }
+    header{
+      max-width:1100px;
+      margin:28px auto 10px;
+      padding:0 18px;
+    }
+    .title{
+      display:flex; flex-wrap:wrap; gap:12px; align-items:baseline; justify-content:space-between;
+    }
+    h1{margin:0; font-size:clamp(22px, 3vw, 32px);}
+    .meta{
+      color:var(--muted);
+      font-size:14px;
     }
     .container{
-      max-width: 980px; margin: 28px auto; background: var(--card);
-      padding: 40px 44px; border-radius: var(--radius); box-shadow: var(--shadow);
+      max-width:1100px;
+      margin: 0 auto 64px;
+      padding: 0 18px;
     }
-    h1{font-size: 30px; margin: 0 0 6px;}
-    h2{font-size: 22px; margin: 34px 0 10px; padding-top: 8px;}
-    h3{font-size: 18px; margin: 22px 0 8px;}
-    p, li{font-size: 15px;}
-    .meta{color: var(--muted); margin: 0 0 18px;}
-    .toc{border:1px solid var(--rule); border-radius: 12px; padding: 14px 16px; background:#fcfcfd;}
-    .toc a{color: inherit; text-decoration: none;}
-    .toc a:hover{text-decoration: underline;}
-    hr{border:none; border-top:1px solid var(--rule); margin: 34px 0;}
-    code, pre{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    .toc{
+      margin:18px 0 22px;
+      padding:16px;
+      background:rgba(17,24,39,.65);
+      border:1px solid var(--rule);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
     }
-    pre{
-      background:#0b1020; color:#e5e7eb; padding: 14px 16px; border-radius: 12px; overflow:auto;
-      font-size: 13px; line-height: 1.45;
+    .toc a{color:var(--ink); text-decoration:none}
+    .toc a:hover{color:var(--accent)}
+    .toc ul{margin:8px 0 0; padding-left:18px}
+    section{
+      margin: 22px 0;
+      padding: 18px;
+      background:rgba(17,24,39,.65);
+      border:1px solid var(--rule);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
     }
-    .callout{
-      border-left: 4px solid #3b82f6; background:#f7fbff; padding: 12px 14px; border-radius: 10px;
-      color: #111827; margin: 14px 0;
+    section h2{
+      margin:0 0 10px;
+      font-size:18px;
     }
-    figure{margin: 14px 0 18px; text-align: center;}
-    figure img{max-width: 100%; border-radius: 12px; border: 1px solid var(--rule);}
-    figcaption{color: var(--muted); font-size: 13px; margin-top: 6px;}
+    section p{
+      margin:0 0 12px;
+      color:var(--muted);
+      font-size:14px;
+    }
     .grid{
-      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap:14px;
     }
-    .grid3{
-      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
+    figure{
+      margin:0;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius: 14px;
+      overflow:hidden;
+      background: rgba(3,7,18,.55);
     }
-    .grid4{
-      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px;
+    figure img{
+      width:100%;
+      height:auto;
+      display:block;
+      background:#0a0e16;
     }
-    @media (max-width: 860px){
-      .container{padding: 26px 18px;}
-      .grid, .grid3, .grid4{grid-template-columns: 1fr;}
+    figcaption{
+      padding:10px 12px 12px;
+      font-size:13px;
+      color:var(--muted);
+      border-top:1px solid rgba(255,255,255,.06);
     }
-    .small{font-size: 13px; color: var(--muted);}
-    .badge{display:inline-block; font-size:12px; padding: 2px 10px; border:1px solid var(--rule); border-radius: 999px; color: var(--muted);}
-    .kpi{display:flex; gap:10px; flex-wrap: wrap; margin: 10px 0 0;}
-  
+    .tag{
+      display:inline-block;
+      font-size:12px;
+      padding:2px 8px;
+      border-radius:999px;
+      background: rgba(96,165,250,.15);
+      color: var(--ink);
+      border:1px solid rgba(96,165,250,.25);
+      margin-right:6px;
+    }
     .missing{
-      border: 1px dashed var(--rule);
-      border-radius: 12px;
-      padding: 18px 14px;
-      color: var(--muted);
-      text-align: center;
-      background: #fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:180px;
+      padding:14px;
+      text-align:center;
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius: 14px;
+      background: rgba(3,7,18,.35);
+      color: rgba(229,231,235,.78);
+      font-size:13px;
     }
-    </style>
+    .missing strong{color:#fff}
+    .note{
+      margin-top:10px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono";
+      font-size: 12px;
+      color: #d1d5db;
+    }
+    footer{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:13px;
+      text-align:center;
+    }
+    .small{
+      font-size:12px;
+      color:var(--muted);
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>CS180 / CS280A — Project 5A: Fun with Diffusion Models (Part A)</h1>
-    <p class="meta">
-      <strong>Author:</strong> Karl Deck &nbsp;·&nbsp;
-      <strong>Date:</strong> <!-- TODO --> Dec XX, 2025 &nbsp;·&nbsp;
-      <strong>Seed:</strong> <!-- TODO --> 0
-    </p>
+  <header>
+    <div class="title">
+      <h1>CS180 / CS280A — Project 5A: Diffusion Models (Results)</h1>
+      <div class="meta">Name: ________ · SID: ________ · Seed: ________</div>
+    </div>
 
     <div class="toc">
-      <strong>Table of contents</strong>
+      <div><span class="tag">TOC</span> Jump to:</div>
       <ul>
-        <li><a href="#part0">Part 0 — Text-to-image warmup</a></li>
-        <li><a href="#part1">Part 1 — Sampling loops</a>
-          <ul>
-            <li><a href="#p11">1.1 Forward process</a></li>
-            <li><a href="#p12">1.2 Classical denoising (Gaussian blur)</a></li>
-            <li><a href="#p13">1.3 One-step denoising</a></li>
-            <li><a href="#p14">1.4 Iterative denoising (strided DDPM)</a></li>
-            <li><a href="#p15">1.5 Sampling from pure noise</a></li>
-            <li><a href="#p16">1.6 Classifier-Free Guidance (CFG)</a></li>
-            <li><a href="#p17">1.7 Image-to-image translation (SDEdit + inpainting)</a></li>
-            <li><a href="#p18">1.8 Visual anagrams (flip illusion)</a></li>
-            <li><a href="#p19">1.9 Hybrid images (factorized diffusion)</a></li>
-          </ul>
-        </li>
-        <li><a href="#part2">Part 2 — Bells & Whistles (CS280A)</a></li>
+        <li><a href="#p0">Part 0 — Prompt Sampling</a></li>
+        <li><a href="#p11">1.1 Forward Process (Noising)</a></li>
+        <li><a href="#p12">1.2 Classical Denoising (Gaussian)</a></li>
+        <li><a href="#p13">1.3 One-Step Denoising</a></li>
+        <li><a href="#p14">1.4 Iterative Denoising</a></li>
+        <li><a href="#p15">1.5 Sampling (from noise)</a></li>
+        <li><a href="#p16">1.6 CFG Sampling</a></li>
+        <li><a href="#p17">1.7 Image-to-Image (Edits)</a></li>
+        <li><a href="#p172">1.7.2 Inpainting</a></li>
+        <li><a href="#p18">1.8 Visual Anagrams</a></li>
+        <li><a href="#p19">1.9 Hybrid Images</a></li>
+        <li><a href="#p2">Part 2 — Bells &amp; Whistles</a></li>
       </ul>
-      <p class="small">
-        Note: this webpage is intended to be exported to PDF for Gradescope, per Part A instructions. citeturn1view0
+      <div class="note">
+        Put <b>this HTML file</b> in the same folder as your images (or edit <code>BASE_PATH</code> below).
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Helper: change this if your images are in a subfolder like "results/" -->
+    <script>
+      const BASE_PATH = ""; // e.g. "results/"  (must end with /)
+      function img(src){ return BASE_PATH + src; }
+    </script>
+
+    <!-- Part 0 -->
+    <section id="p0">
+      <h2>Part 0 — Prompt Sampling</h2>
+      <p>Stage I / II sampling from custom prompts. (Add your chosen prompts + reflections here.)</p>
+      <div class="grid">
+        <div class="missing"><div><strong>MISSING:</strong><br/>Part 0 sampled images (3 prompts × (stage1 + stage2))</div></div>
+      </div>
+    </section>
+
+    <!-- 1.1 -->
+    <section id="p11">
+      <h2>1.1 Forward Process — Noisy Campanile at t = [250, 500, 750]</h2>
+      <p>Show progressively noisier images produced by your <code>forward()</code> implementation.</p>
+      <div class="grid">
+        <div class="missing"><div><strong>MISSING:</strong><br/>noisy_campanile_t250.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>noisy_campanile_t500.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>noisy_campanile_t750.png</div></div>
+      </div>
+    </section>
+
+    <!-- 1.2 -->
+    <section id="p12">
+      <h2>1.2 Classical Denoising — Gaussian Blur (t = [250, 500, 750])</h2>
+      <p>Best Gaussian-denoised versions side-by-side with noisy inputs.</p>
+      <div class="grid">
+        <div class="missing"><div><strong>MISSING:</strong><br/>gaussian_pair_t250.png (noisy | blurred)</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>gaussian_pair_t500.png (noisy | blurred)</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>gaussian_pair_t750.png (noisy | blurred)</div></div>
+      </div>
+    </section>
+
+    <!-- 1.3 -->
+    <section id="p13">
+      <h2>1.3 One-Step Denoising (UNet) — (original | noisy | denoised)</h2>
+      <p>One-step x₀ estimate from UNet noise prediction at t = [250, 500, 750].</p>
+      <div class="grid">
+        <div class="missing"><div><strong>MISSING:</strong><br/>onestep_triplet_t250.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>onestep_triplet_t500.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>onestep_triplet_t750.png</div></div>
+      </div>
+    </section>
+
+    <!-- 1.4 -->
+    <section id="p14">
+      <h2>1.4 Iterative Denoising</h2>
+      <p>Noisy at <code>i_start = 10</code> + iterative denoise (plus one-step + blur baseline).</p>
+      <div class="grid">
+        <div class="missing"><div><strong>MISSING:</strong><br/>iterative_progress_every5.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>iterative_final.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>iterative_vs_onestep_vs_blur.png</div></div>
+      </div>
+    </section>
+
+    <!-- 1.5 -->
+    <section id="p15">
+      <h2>1.5 Sampling (from pure noise) — “a high quality photo”</h2>
+      <p>5 generated samples (without CFG).</p>
+      <div class="grid">
+        <div class="missing"><div><strong>MISSING:</strong><br/>sample_no_cfg_1.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>sample_no_cfg_2.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>sample_no_cfg_3.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>sample_no_cfg_4.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>sample_no_cfg_5.png</div></div>
+      </div>
+    </section>
+
+    <!-- 1.6 -->
+    <section id="p16">
+      <h2>1.6 Classifier-Free Guidance (CFG=7) — “a high quality photo”</h2>
+      <p>These look like your saved <code>diffusion#*.png</code>. If those are CFG samples, they go here.</p>
+      <div class="grid">
+        <figure>
+          <img src="diffusion#1.png" alt="CFG sample 1" />
+          <figcaption><span class="tag">CFG</span> diffusion#1.png</figcaption>
+        </figure>
+        <figure>
+          <img src="diffusion#2.png" alt="CFG sample 2" />
+          <figcaption><span class="tag">CFG</span> diffusion#2.png</figcaption>
+        </figure>
+        <figure>
+          <img src="diffusion#3.png" alt="CFG sample 3" />
+          <figcaption><span class="tag">CFG</span> diffusion#3.png</figcaption>
+        </figure>
+        <figure>
+          <img src="diffusion#4.png" alt="CFG sample 4" />
+          <figcaption><span class="tag">CFG</span> diffusion#4.png</figcaption>
+        </figure>
+        <figure>
+          <img src="diffusion#5.png" alt="CFG sample 5" />
+          <figcaption><span class="tag">CFG</span> diffusion#5.png</figcaption>
+        </figure>
+      </div>
+      <div class="small">If these are not CFG samples, tell me what they are and I’ll move them.</div>
+    </section>
+
+    <!-- 1.7 -->
+    <section id="p17">
+      <h2>1.7 Image-to-Image Translation (SDEdit style) — Campanile edits</h2>
+      <p>Edits at starting indices [1,3,5,7,10,20] with prompt “a high quality photo”. I’m assuming <code>7#1.png … 7#6.png</code> are these.</p>
+      <div class="grid">
+        <figure>
+          <img src="7#1.png" alt="Campanile edit 1" />
+          <figcaption><span class="tag">Edit</span> 7#1.png (assumed i_start=1)</figcaption>
+        </figure>
+        <figure>
+          <img src="7#2.png" alt="Campanile edit 2" />
+          <figcaption><span class="tag">Edit</span> 7#2.png (assumed i_start=3)</figcaption>
+        </figure>
+        <figure>
+          <img src="7#3.png" alt="Campanile edit 3" />
+          <figcaption><span class="tag">Edit</span> 7#3.png (assumed i_start=5)</figcaption>
+        </figure>
+        <figure>
+          <img src="7#4.png" alt="Campanile edit 4" />
+          <figcaption><span class="tag">Edit</span> 7#4.png (assumed i_start=7)</figcaption>
+        </figure>
+        <figure>
+          <img src="7#5.png" alt="Campanile edit 5" />
+          <figcaption><span class="tag">Edit</span> 7#5.png (assumed i_start=10)</figcaption>
+        </figure>
+        <figure>
+          <img src="7#6.png" alt="Campanile edit 6" />
+          <figcaption><span class="tag">Edit</span> 7#6.png (assumed i_start=20)</figcaption>
+        </figure>
+      </div>
+
+      <h3 style="margin:16px 0 8px;">Two custom images — edits at [1,3,5,7,10,20]</h3>
+      <p>Looks like you have Bernadine dog edits saved; I placed those here. Add the rest / second custom image as needed.</p>
+      <div class="grid">
+        <figure>
+          <img src="bernadine-dog-20/20.png" alt="Bernadine dog edit" />
+          <figcaption><span class="tag">Custom</span> bernadine-dog-20/20.png</figcaption>
+        </figure>
+        <figure>
+          <img src="bernadine-dog-40/20.png" alt="Bernadine dog edit" />
+          <figcaption><span class="tag">Custom</span> bernadine-dog-40/20.png</figcaption>
+        </figure>
+        <figure>
+          <img src="bernadine-dog-60/40.png" alt="Bernadine dog edit" />
+          <figcaption><span class="tag">Custom</span> bernadine-dog-60/40.png</figcaption>
+        </figure>
+
+        <div class="missing"><div><strong>MISSING:</strong><br/>Custom image #1 — remaining edit panels</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>Custom image #2 — all edit panels</div></div>
+      </div>
+    </section>
+
+    <!-- 1.7.2 -->
+    <section id="p172">
+      <h2>1.7.2 Inpainting</h2>
+      <p>Show: (original | mask | inpainted). Campanile top + two of your own images.</p>
+      <div class="grid">
+        <div class="missing"><div><strong>MISSING:</strong><br/>campanile_inpaint_triplet.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>custom1_inpaint_triplet.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>custom2_inpaint_triplet.png</div></div>
+      </div>
+    </section>
+
+    <!-- 1.8 -->
+    <section id="p18">
+      <h2>1.8 Visual Anagrams</h2>
+      <p>For each illusion, include upright + upside-down (or transformed) view.</p>
+      <div class="grid">
+        <div class="missing"><div><strong>MISSING:</strong><br/>anagram1_upright.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>anagram1_flipped.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>anagram2_upright.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>anagram2_flipped.png</div></div>
+      </div>
+    </section>
+
+    <!-- 1.9 -->
+    <section id="p19">
+      <h2>1.9 Hybrid Images (Factorized Diffusion)</h2>
+      <p>Two hybrids of your choice. Ideally include prompts in captions.</p>
+      <div class="grid">
+        <div class="missing"><div><strong>MISSING:</strong><br/>hybrid1.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>hybrid2.png</div></div>
+      </div>
+    </section>
+
+    <!-- Part 2 -->
+    <section id="p2">
+      <h2>Part 2 — Bells &amp; Whistles (CS280A)</h2>
+      <p>
+        (1) Two additional visual-anagram transformations + results. (2) Course logo design (image-to-image or diffusion).
       </p>
-    </div>
+      <div class="grid">
+        <div class="missing"><div><strong>MISSING:</strong><br/>extra_anagram_transform1_pair.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>extra_anagram_transform2_pair.png</div></div>
+        <div class="missing"><div><strong>MISSING:</strong><br/>course_logo.png</div></div>
+      </div>
+    </section>
 
-    <hr>
+    <footer>
+      <div>Open this page locally or host it (e.g. GitHub Pages). Keep filenames exactly as saved.</div>
+      <div class="small">Tip: if images don’t load, check the folder name and set <code>BASE_PATH</code> near the top.</div>
+    </footer>
+  </main>
 
-    <h2 id="part0">Part 0 — Text-to-image warmup</h2>
-    <p>
-      I generated prompt embeddings (provided by the course tooling) and sampled from DeepFloyd IF Stage I (64×64).
-      I used the same random seed throughout the rest of the assignment as required. citeturn1view0
-    </p>
-</div>
-
-    <h3>0.1 Prompt gallery (3 prompts × 2 step counts)</h3>
-    <p class="small">
-      Replace the <code>src</code> paths with your saved images (e.g., <code>part0/prompt1_steps20.png</code>).
-    </p>
-    <div class="grid">
-      <figure>
-  <div class="missing">Missing image: <code>TODO_part0_prompt1_stepsA.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption><span class="badge">Prompt 1</span> steps = <!-- TODO --> <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_part0_prompt1_stepsB.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption><span class="badge">Prompt 1</span> steps = <!-- TODO --> <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_part0_prompt2_stepsA.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption><span class="badge">Prompt 2</span> steps = <!-- TODO --> <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_part0_prompt2_stepsB.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption><span class="badge">Prompt 2</span> steps = <!-- TODO --> <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_part0_prompt3_stepsA.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption><span class="badge">Prompt 3</span> steps = <!-- TODO --> <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_part0_prompt3_stepsB.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption><span class="badge">Prompt 3</span> steps = <!-- TODO --> <span class="badge">MISSING</span></figcaption>
-</figure>
-    </div>
-
-    <hr>
-
-    <h2 id="part1">Part 1 — Sampling loops</h2>
-
-    <h3 id="p11">1.1 Implementing the forward process</h3>
-</div>
-
-    <div class="grid3">
-      <figure>
-  <div class="missing">Missing image: <code>TODO_forward_t250.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Noisy Campanile (t=250) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_forward_t500.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Noisy Campanile (t=500) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_forward_t750.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Noisy Campanile (t=750) <span class="badge">MISSING</span></figcaption>
-</figure>
-    </div>
-
-    <h3 id="p12">1.2 Classical denoising (Gaussian blur)</h3>
-</div>
-
-    <div class="grid">
-      <figure>
-  <div class="missing">Missing image: <code>TODO_gaussian_t250.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Gaussian blur denoising (t=250) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_gaussian_t500.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Gaussian blur denoising (t=500) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_gaussian_t750.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Gaussian blur denoising (t=750) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_gaussian_side_by_side.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>(Optional) Combined visualization <span class="badge">MISSING</span></figcaption>
-</figure>
-    </div>
-
-    <h3 id="p13">1.3 One-step denoising</h3>
-</div>
-    <div class="grid3">
-      <figure>
-  <div class="missing">Missing image: <code>TODO_onestep_triplet_t250.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Original / noisy / one-step denoised (t=250) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_onestep_triplet_t500.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Original / noisy / one-step denoised (t=500) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_onestep_triplet_t750.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Original / noisy / one-step denoised (t=750) <span class="badge">MISSING</span></figcaption>
-</figure>
-    </div>
-
-    <h3 id="p14">1.4 Iterative denoising (strided DDPM)</h3>
-</div>
-
-    <p class="small">
-      Tip: you can include a “denoising progression” as a strip image (e.g., concatenated outputs every 5 steps).
-    </p>
-    <figure>
-  <div class="missing">Missing image: <code>TODO_iterative_progress_every5.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Iterative denoising progression (every 5th step; start index i_start=10) <span class="badge">MISSING</span></figcaption>
-</figure>
-
-    <div class="grid3">
-      <figure>
-  <div class="missing">Missing image: <code>TODO_iterative_final.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Final iterative denoise (best) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_iterative_onestep_compare.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>One-step denoise (worse) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_iterative_gaussian_compare.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Gaussian blur (baseline) <span class="badge">MISSING</span></figcaption>
-</figure>
-    </div>
-
-    <h3 id="p15">1.5 Diffusion model sampling (from pure noise)</h3>
-</div>
-    <div class="grid4">
-      <figure>
-  <div class="missing">Missing image: <code>TODO_sampling1.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Sample 1 <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_sampling2.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Sample 2 <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_sampling3.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Sample 3 <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_sampling4.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Sample 4 <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_sampling5.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Sample 5 <span class="badge">MISSING</span></figcaption>
-</figure>
-    </div>
-
-    <h3 id="p16">1.6 Classifier-Free Guidance (CFG)</h3>
-</div>
-    <div class="grid4">
-      <figure><img src="diffusion#1.png" alt="cfg 1"><figcaption>CFG sample 1</figcaption></figure>
-      <figure><img src="diffusion#2.png" alt="cfg 2"><figcaption>CFG sample 2</figcaption></figure>
-      <figure><img src="diffusion#3.png" alt="cfg 3"><figcaption>CFG sample 3</figcaption></figure>
-      <figure><img src="diffusion#4.png" alt="cfg 4"><figcaption>CFG sample 4</figcaption></figure>
-      <figure><img src="diffusion#5.png" alt="cfg 5"><figcaption>CFG sample 5</figcaption></figure>
-    </div>
-
-    <h3 id="p17">1.7 Image-to-image translation</h3>
-
-    <h4>1.7.0 SDEdit on Campanile + 2 personal images</h4>
-</div>
-
-    <p class="small">Each figure below can be a side-by-side “original vs edited” image per i_start.</p>
-
-    <h4>Campanile edits</h4>
-    <div class="grid">
-      <figure><img src="7#1.png" alt="campanile i=1"><figcaption>Campanile edit (i_start=1)</figcaption></figure>
-      <figure><img src="7#2.png" alt="campanile i=3"><figcaption>Campanile edit (i_start=3)</figcaption></figure>
-      <figure><img src="7#3.png" alt="campanile i=5"><figcaption>Campanile edit (i_start=5)</figcaption></figure>
-      <figure><img src="7#4.png" alt="campanile i=7"><figcaption>Campanile edit (i_start=7)</figcaption></figure>
-      <figure><img src="7#5.png" alt="campanile i=10"><figcaption>Campanile edit (i_start=10)</figcaption></figure>
-      <figure><img src="7#6.png" alt="campanile i=20"><figcaption>Campanile edit (i_start=20)</figcaption></figure>
-    </div>
-
-    <h4>My image #1 edits</h4>
-    <div class="grid">
-      <figure>
-  <div class="missing">Missing image: <code>TODO_myimg1_i1.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>My image #1 (i_start=1) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_myimg1_i3.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>My image #1 (i_start=3) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_myimg1_i5.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>My image #1 (i_start=5) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image slot filled by <code>bernadine-dog-60/40.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>My image #1 (i_start=7) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image slot filled by <code>bernadine-dog-40/20.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>My image #1 (i_start=10) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image slot filled by <code>bernadine-dog-20/20.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>My image #1 (i_start=20) <span class="badge">MISSING</span></figcaption>
-</figure>
-    </div>
-
-    <h4>My image #2 edits</h4>
-    <div class="grid">
-      <figure>
-  <div class="missing">Missing image: <code>TODO_myimg2_i1.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>My image #2 (i_start=1) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_myimg2_i3.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>My image #2 (i_start=3) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_myimg2_i5.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>My image #2 (i_start=5) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image slot filled by <code>man-w-beer-60/40.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>My image #2 (i_start=7) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image slot filled by <code>man-w-beer-40/20.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>My image #2 (i_start=10) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image slot filled by <code>man-w-beer-20/20.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>My image #2 (i_start=20) <span class="badge">MISSING</span></figcaption>
-</figure>
-    </div>
-
-    <h4>1.7.1 Web image + hand-drawn images</h4>
-</div>
-    <p class="small">Add your results here (same layout as above).</p>
-
-    <h4>1.7.2 Inpainting (RePaint-style forcing)</h4>
-</div>
-    <div class="grid3">
-      <figure>
-  <div class="missing">Missing image: <code>TODO_inpaint_original.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Original image <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_inpaint_mask.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Mask (white = region to inpaint) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_inpaint_result.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Inpainted result <span class="badge">MISSING</span></figcaption>
-</figure>
-    </div>
-
-    <h4>1.7.3 Text-conditional image-to-image translation</h4>
-</div>
-    <p class="small">Add a grid of your text-guided edits here.</p>
-
-    <h3 id="p18">1.8 Visual anagrams (flip illusion)</h3>
-</div>
-
-    <div class="grid">
-      <figure>
-  <div class="missing">Missing image: <code>TODO_anagram1_upright.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Illusion #1 (upright) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_anagram1_flipped.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Illusion #1 (flipped 180°) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_anagram2_upright.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Illusion #2 (upright) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_anagram2_flipped.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Illusion #2 (flipped 180°) <span class="badge">MISSING</span></figcaption>
-</figure>
-    </div>
-
-    <h3 id="p19">1.9 Hybrid images (factorized diffusion)</h3>
-</div>
-
-    <div class="grid">
-      <figure>
-  <div class="missing">Missing image: <code>TODO_hybrid1.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Hybrid #1 (near vs far effect) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_hybrid1_far.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Hybrid #1 (optional far-view crop/resize) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_hybrid2.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Hybrid #2 (near vs far effect) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_hybrid2_far.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Hybrid #2 (optional far-view crop/resize) <span class="badge">MISSING</span></figcaption>
-</figure>
-    </div>
-
-    <hr>
-
-    <h2 id="part2">Part 2 — Bells & Whistles (required for CS280A)</h2>
-</div>
-
-    <h3>2.1 Additional anagram transformation #1 — Mirror</h3>
-    <p class="small">Show the generated image plus its mirrored view (and describe prompts used).</p>
-    <div class="grid">
-      <figure>
-  <div class="missing">Missing image: <code>TODO_mirror_upright.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Mirror anagram (original view) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_mirror_mirrored.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Mirror anagram (horizontally flipped) <span class="badge">MISSING</span></figcaption>
-</figure>
-    </div>
-
-    <h3>2.2 Additional anagram transformation #2 — <!-- TODO: pick one (rotate 90°, skew, etc.) --></h3>
-    <div class="grid">
-      <figure>
-  <div class="missing">Missing image: <code>TODO_extra_anagram_view1.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Extra anagram (view 1) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_extra_anagram_view2.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Extra anagram (transformed view) <span class="badge">MISSING</span></figcaption>
-</figure>
-    </div>
-
-    <h3>2.3 Course logo design</h3>
-    <div class="grid">
-      <figure>
-  <div class="missing">Missing image: <code>TODO_logo_input.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Input (UCB logo or sketch) <span class="badge">MISSING</span></figcaption>
-</figure>
-      <figure>
-  <div class="missing">Missing image: <code>TODO_logo_output.png</code><br><span class="small">Update the filename or add the file next to this HTML.</span></div>
-  <figcaption>Edited / generated logo output <span class="badge">MISSING</span></figcaption>
-</figure>
-    </div>
-
-    <hr>
-
-    <p class="small">
-      Reference: I used the same general HTML structure/style as my previous CS180 project webpage and adapted it to the Project 5A deliverables. fileciteturn1file0L1-L20
-    </p>
-  </div>
+  <script>
+    // Optional: prepend BASE_PATH to all <img src="..."> automatically
+    // (useful if you set BASE_PATH but forgot to update tags)
+    (function(){
+      if(!BASE_PATH) return;
+      document.querySelectorAll("img").forEach(im=>{
+        if(im.getAttribute("src").startsWith("http")) return;
+        im.src = BASE_PATH + im.getAttribute("src");
+      });
+    })();
+  </script>
 </body>
 </html>
