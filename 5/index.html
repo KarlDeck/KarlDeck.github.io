@@ -197,54 +197,135 @@
  'a rocket ship with the German Chancellor Merkel on it',
  'a pencil',
  '']</p>
-<div class="grid">
-  <figure>
-    <img src="bernadine-dog-20:20.png" alt="Dog with Stage 1: 20 and Stage 2: 20" />
-    <figcaption>Bernadine dog — SDEdit (Stage 1: 20, Stage 2: 20)</figcaption>
-  </figure>
+<!-- ========================= -->
+<!-- 1.6 CFG Sampling Results -->
+<!-- ========================= -->
+<section>
+  <h2>1.6 Classifier-Free Guidance (CFG = 7)</h2>
+  <p>Sampling from pure noise using the prompt <em>"a high quality photo"</em>.</p>
 
-  <figure>
-    <img src="bernadine-dog-40:20.png" alt="Dog with Stage 1: 40 and Stage 2: 20" />
-    <figcaption>Bernadine dog — SDEdit (Stage 1: 40, Stage 2: 20)</figcaption>
-  </figure>
+  <div class="grid">
+    <figure>
+      <img src="5/diffusion#1.png" alt="CFG sample 1" />
+      <figcaption>CFG sample #1</figcaption>
+    </figure>
+    <figure>
+      <img src="5/diffusion#2.png" alt="CFG sample 2" />
+      <figcaption>CFG sample #2</figcaption>
+    </figure>
+    <figure>
+      <img src="5/diffusion#3.png" alt="CFG sample 3" />
+      <figcaption>CFG sample #3</figcaption>
+    </figure>
+    <figure>
+      <img src="5/diffusion#4.png" alt="CFG sample 4" />
+      <figcaption>CFG sample #4</figcaption>
+    </figure>
+    <figure>
+      <img src="5/diffusion#5.png" alt="CFG sample 5" />
+      <figcaption>CFG sample #5</figcaption>
+    </figure>
+  </div>
+</section>
 
-  <figure>
-    <img src="bernadine-dog-60:40.png" alt="Dog with Stage 1: 60 and Stage 2: 40" />
-    <figcaption>Bernadine dog — SDEdit (Stage 1: 60, Stage 2: 40)</figcaption>
-  </figure>
-</div>
-<div class="grid">
-  <figure>
-    <img src="oil-old-man-1.png" alt="Oil painting of an old man" />
-    <figcaption>Oil painting of an old man — diffusion sample</figcaption>
-  </figure>
+<!-- ================================= -->
+<!-- 1.7 Image-to-Image (Campanile) -->
+<!-- ================================= -->
+<section>
+  <h2>1.7 Image-to-Image Translation — Campanile</h2>
+  <p>Edits at different noise levels (i_start = 1, 3, 5, 7, 10, 20).</p>
 
-  <figure>
-    <img src="oil-old-man-2.png" alt="Oil painting of an old man (variant)" />
-    <figcaption>Oil painting of an old man — diffusion sample (variant)</figcaption>
-  </figure>
+  <div class="grid">
+    <figure>
+      <img src="5/7#1.png" alt="Campanile edit i_start=1" />
+      <figcaption>Campanile edit (i_start = 1)</figcaption>
+    </figure>
+    <figure>
+      <img src="5/7#2.png" alt="Campanile edit i_start=3" />
+      <figcaption>Campanile edit (i_start = 3)</figcaption>
+    </figure>
+    <figure>
+      <img src="5/7#3.png" alt="Campanile edit i_start=5" />
+      <figcaption>Campanile edit (i_start = 5)</figcaption>
+    </figure>
+    <figure>
+      <img src="5/7#4.png" alt="Campanile edit i_start=7" />
+      <figcaption>Campanile edit (i_start = 7)</figcaption>
+    </figure>
+    <figure>
+      <img src="5/7#5.png" alt="Campanile edit i_start=10" />
+      <figcaption>Campanile edit (i_start = 10)</figcaption>
+    </figure>
+    <figure>
+      <img src="5/7#6.png" alt="Campanile edit i_start=20" />
+      <figcaption>Campanile edit (i_start = 20)</figcaption>
+    </figure>
+  </div>
+</section>
 
-  <figure>
-    <img src="oil-old-man-3.png" alt="Oil painting of an old man (variant)" />
-    <figcaption>Oil painting of an old man — diffusion sample (variant)</figcaption>
-  </figure>
-</div>
-<div class="grid">
-  <figure>
-    <img src="man-with-beer-20:20.png" alt="Man with beer Stage 1:20 Stage 2:20" />
-    <figcaption>Man with beer — SDEdit (Stage 1: 20, Stage 2: 20)</figcaption>
-  </figure>
+<!-- ================================= -->
+<!-- 1.7 Image-to-Image — Bernadine -->
+<!-- ================================= -->
+<section>
+  <h2>1.7 Image-to-Image Translation — Bernadine Dog</h2>
+  <p>SDEdit with different Stage 1 / Stage 2 noise levels.</p>
 
-  <figure>
-    <img src="man-with-beer-40:20.png" alt="Man with beer Stage 1:40 Stage 2:20" />
-    <figcaption>Man with beer — SDEdit (Stage 1: 40, Stage 2: 20)</figcaption>
-  </figure>
+  <div class="grid">
+    <figure>
+      <img src="5/bernadine-dog-20:20.png" alt="Bernadine dog 20:20" />
+      <figcaption>Bernadine dog — SDEdit (Stage 1: 20, Stage 2: 20)</figcaption>
+    </figure>
+    <figure>
+      <img src="5/bernadine-dog-40:20.png" alt="Bernadine dog 40:20" />
+      <figcaption>Bernadine dog — SDEdit (Stage 1: 40, Stage 2: 20)</figcaption>
+    </figure>
+    <figure>
+      <img src="5/bernadine-dog-60:40.png" alt="Bernadine dog 60:40" />
+      <figcaption>Bernadine dog — SDEdit (Stage 1: 60, Stage 2: 40)</figcaption>
+    </figure>
+  </div>
+</section>
 
-  <figure>
-    <img src="man-with-beer-60:40.png" alt="Man with beer Stage 1:60 Stage 2:40" />
-    <figcaption>Man with beer — SDEdit (Stage 1: 60, Stage 2: 40)</figcaption>
-  </figure>
-</div>
+<!-- ================================= -->
+<!-- 1.7 Image-to-Image — Man w/ Beer -->
+<!-- ================================= -->
+<section>
+  <h2>1.7 Image-to-Image Translation — Man with Beer</h2>
+
+  <div class="grid">
+    <figure>
+      <img src="5/man-w-beer-20:20.png" alt="Man with beer 20:20" />
+      <figcaption>Man with beer — SDEdit (Stage 1: 20, Stage 2: 20)</figcaption>
+    </figure>
+    <figure>
+      <img src="5/man-w-beer-40:20.png" alt="Man with beer 40:20" />
+      <figcaption>Man with beer — SDEdit (Stage 1: 40, Stage 2: 20)</figcaption>
+    </figure>
+    <figure>
+      <img src="5/man-w-beer-60:40.png" alt="Man with beer 60:40" />
+      <figcaption>Man with beer — SDEdit (Stage 1: 60, Stage 2: 40)</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ================================= -->
+<!-- 1.7 Image-to-Image — Oil Painting -->
+<!-- ================================= -->
+<section>
+  <h2>1.7 Image-to-Image Translation — Oil Painting (Lederhose)</h2>
+
+  <div class="grid">
+    <figure>
+      <img src="5/oil-painting-lederhose-20:20.png" alt="Oil painting lederhose 20:20" />
+      <figcaption>Oil painting (lederhose) — SDEdit (Stage 1: 20, Stage 2: 20)</figcaption>
+    </figure>
+    <figure>
+      <img src="5/oil-painting-lederhose-40:20.png" alt="Oil painting lederhose 40:20" />
+      <figcaption>Oil painting (lederhose) — SDEdit (Stage 1: 40, Stage 2: 20)</figcaption>
+    </figure>
+  </div>
+</section>
+
 
 
     </section>
